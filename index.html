@@ -477,7 +477,7 @@ const ABOUT = {
    لإضافة شهادة: انسخ { ... } والصقها تحت آخر شهادة.
    logo : شعار الجهة (اختياري) — ارفع الصورة للريبو واكتب اسمها مثل "uqu-logo.png". إذا حطيته يطلع بدل الأيقونة
    icon : أيقونة تطلع إذا ما فيه شعار: graduation-cap (شهادة جامعية) ، award (شهادة) ، laptop-code (معسكر/دورة) ، certificate (شهادة احترافية)
-   link : رابط الشهادة (اختياري) — إذا حطيته يطلع زر "عرض الشهادة"
+   link : رابط الشهادة (اختياري) — إذا حطيته يصير الشعار قابل للضغط ويطلع زر "عرض الشهادة"
           ممكن يكون رابط Credly أو LinkedIn أو صورة/PDF مرفوعة للريبو مثل "cert-ux.pdf"
    تحت الشهادات يطلع زر تحميل السيرة الذاتية، ورابطه في SITE.resumeFile فوق.
 ─────────────────────────────────────────────────────────────── */
@@ -492,7 +492,7 @@ const CERTIFICATES = [
     {
         logo: "namakkin-logo.png", // ← شعار نمكّن
         icon: "laptop-code",
-        link: "",
+        link: "https://certify.nmkkn.com/credentials/4e1f5984-f7a2-47a2-8ecb-ee52fe234fcd?preview=1",
         ar: { title: "معسكر تجربة المستخدم", sub: "نمكّن", date: "2026" },
         en: { title: "UX Bootcamp", sub: "Namakkin", date: "2026" },
     },
@@ -697,11 +697,11 @@ function renderCertificates() {
         const d = r[lang];
         return `
         <div class="flex gap-4 items-start p-5 rounded-2xl border border-line bg-white">
-            <span class="w-14 h-14 shrink-0 rounded-xl bg-white border border-line flex items-center justify-center text-accent overflow-hidden">
+            <${r.link ? `a href="${esc(r.link)}" target="_blank" rel="noopener" title="${esc(UI[lang]['cert-view'])}"` : 'span'} class="w-14 h-14 shrink-0 rounded-xl bg-white border border-line flex items-center justify-center text-accent overflow-hidden${r.link ? ' hover:border-[color:var(--accent)] hover:shadow-md transition-all' : ''}">
                 ${r.logo
                     ? `<img src="${esc(r.logo)}" alt="" class="w-full h-full object-contain p-1.5" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'fa-solid fa-${esc(r.icon || 'circle')} text-base'}))">`
                     : `<i class="fa-solid fa-${esc(r.icon || 'circle')} text-base"></i>`}
-            </span>
+            </${r.link ? 'a' : 'span'}>
             <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h3 class="font-bold text-ink">${esc(d.title)}</h3>
