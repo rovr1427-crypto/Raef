@@ -265,7 +265,8 @@ const SITE = {
    id         اسم مختصر بالإنجليزي (يطلع في الرابط مثل  #/project/mystc)
    year       السنة
    tags       الأدوات المستخدمة
-   cover      صورة غلاف للبطاقة (اختياري) مثل "mystc-cover.png"
+   cover      صورة غلاف تطلع فوق دراسة الحالة (داخل المشروع) مثل "mystc-cover.webp"
+   imagesCols كم صورة في الصف في معرض الصور (1 أو 2 أو 4) — اختياري
    protoLink  رابط البروتوتايب في فيجما (اختياري)
    liveLink   رابط الموقع المنشور (اختياري) — يطلع زر "زيارة الموقع"
    images     صور التصميم النهائي داخل دراسة الحالة. كل صورة:
@@ -289,11 +290,14 @@ const PROJECTS = [
         id: "mystc",
         year: "2026",
         tags: ["Figma", "FigJam"],
-        cover: "",
+        cover: "mystc-cover.webp",
         protoLink: "https://www.figma.com/proto/nTtMzd6GYWAG6GuQjbMYgf/My-stc?node-id=43-3235&p=f&viewport=-2842%2C-892%2C0.39&t=doBMDTkwmspAjGPv-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=43%3A3235&show-proto-sidebar=1&page-id=31%3A214",
+        imagesCols: 4,   // كم صورة في الصف (للشاشات الطويلة حط 2 أو 4، للصور العريضة خله 1)
         images: [
-            // "mystc-1.png",
-            // { src: "mystc-2.png", ar: "صفحة الباقات", en: "Plans screen" },
+            { src: "mystc-home.webp",     ar: "الرئيسية",  en: "Home" },
+            { src: "mystc-store.webp",    ar: "المتجر",    en: "Store" },
+            { src: "mystc-services.webp", ar: "خدماتي",    en: "My services" },
+            { src: "mystc-pay.webp",      ar: "الدفع",     en: "Payment" },
         ],
         ar: {
             title: "إعادة تصميم تطبيق mystc",
@@ -649,7 +653,6 @@ function renderProjects() {
         const d = p[lang];
         return `
         <a href="#/project/${esc(p.id)}" class="group block rounded-2xl border border-line bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/5 transition-all overflow-hidden">
-            ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(d.title)}" class="w-full aspect-[16/10] object-cover bg-soft">` : ''}
             <div class="p-6 sm:p-7 flex gap-5">
                 <span class="section-num pt-1.5 hidden sm:block">${pad(i + 1)}</span>
                 <div class="flex-1 min-w-0">
@@ -767,7 +770,7 @@ function renderCase(id) {
         <section class="py-9 border-t border-line">
             ${head('solution')}
             ${!isEmpty(d.solution) ? `<div class="text-[15px] text-muted leading-loose space-y-4 mb-6">${renderBlock(d.solution)}</div>` : ''}
-            ${images ? `<div class="grid gap-6">${images}</div>` : ''}
+            ${images ? `<div class="grid gap-6 ${p.imagesCols >= 4 ? 'grid-cols-2 sm:grid-cols-4' : p.imagesCols >= 2 ? 'grid-cols-2' : ''}">${images}</div>` : ''}
             ${p.protoLink || p.liveLink ? `<div class="mt-6 flex flex-wrap gap-3">` : ''}
             ${p.protoLink ? `
             <a href="${esc(p.protoLink)}" target="_blank" rel="noopener" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
