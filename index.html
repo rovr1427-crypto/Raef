@@ -345,12 +345,18 @@ const PROJECTS = [
     {
         id: "sports",
         year: "2026",
-        tags: ["Flutter", "Dart"],
-        cover: "",
-        protoLink: "",   // ← حط رابط بروتوتايب الملاعب هنا (كان مكرر رابط mystc)
-        images: [],
+        tags: ["Figma", "Flutter", "Dart"],
+        cover: "malaabik-cover.webp",
+        protoLink: "https://www.figma.com/design/xlEazLgPNCrhEiJ0fXhMEz/%D9%85%D9%84%D8%B9%D8%A8?node-id=0-1&t=zGUvxyFcG9EhlZ0F-1",
+        imagesCols: 4,
+        images: [
+            { src: "malaabik-list.webp",    ar: "الملاعب",       en: "Fields" },
+            { src: "malaabik-field.webp",   ar: "تفاصيل الملعب", en: "Field details" },
+            { src: "malaabik-booking.webp", ar: "تفاصيل الحجز",  en: "Booking details" },
+            { src: "malaabik-done.webp",    ar: "تأكيد الحجز",   en: "Booking confirmed" },
+        ],
         ar: {
-            title: "تطبيق حجز الملاعب الرياضية",
+            title: "ملعبك — تطبيق حجز الملاعب الرياضية",
             desc: "تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.",
             role: "",
             overview: "منصة ذكية تربط بين أصحاب الملاعب الرياضية واللاعبين الراغبين في حجز الملاعب والمباريات بشكل سلس وموثوق.",
@@ -361,7 +367,7 @@ const PROJECTS = [
             takeaways: "بناء هيكل برمجي نظيف وقابل للتوسع باستخدام إطار عمل Flutter مع دعم كامل للغة العربية والإنجليزية.",
         },
         en: {
-            title: "Sports Field Booking App",
+            title: "Malaabik — Sports Field Booking App",
             desc: "A mobile app built with Flutter to easily book and manage sports fields.",
             role: "",
             overview: "A smart platform connecting sports field owners with players who want to book fields and matches smoothly and reliably.",
