@@ -79,10 +79,7 @@
     <!-- ============ الهيدر ============ -->
     <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-line">
         <div class="max-w-4xl mx-auto px-5 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-y-2">
-            <a href="#" class="flex items-center gap-2.5 font-bold text-ink">
-                <span class="w-2 h-2 rounded-full bg-accent"></span>
-                <span id="brand-name"></span>
-            </a>
+            <a href="#" class="font-bold text-ink" data-i18n="brand"></a>
 
             <nav id="nav-links" class="order-last sm:order-none w-full sm:w-auto flex items-center gap-5 sm:gap-7 text-sm font-medium text-muted overflow-x-auto no-scrollbar">
                 <a href="#projects" class="hover:text-ink transition-colors whitespace-nowrap" data-i18n="nav-projects"></a>
@@ -482,6 +479,7 @@ const CERTIFICATES = [
 ─────────────────────────────────────────────────────────────── */
 const UI = {
     ar: {
+        "brand": "ملف الأعمال",
         "lang-btn": "English",
         "nav-projects": "المشاريع",
         "nav-experience": "الخبرات",
@@ -517,6 +515,7 @@ const UI = {
         "rights": "جميع الحقوق محفوظة",
     },
     en: {
+        "brand": "Portfolio",
         "lang-btn": "عربي",
         "nav-projects": "Projects",
         "nav-experience": "Experience",
@@ -588,7 +587,6 @@ function renderStatic() {
         if (t[k] != null) el.textContent = t[k];
     });
 
-    $('brand-name').textContent = s.name;
     $('hero-avatar').src = SITE.avatar;
     $('hero-avatar').alt = s.name;
     $('hero-badge').textContent = s.badge;
