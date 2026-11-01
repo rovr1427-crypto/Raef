@@ -267,6 +267,7 @@ const SITE = {
    tags       الأدوات المستخدمة
    cover      صورة غلاف للبطاقة (اختياري) مثل "mystc-cover.png"
    protoLink  رابط البروتوتايب في فيجما (اختياري)
+   liveLink   رابط الموقع المنشور (اختياري) — يطلع زر "زيارة الموقع"
    images     صور التصميم النهائي داخل دراسة الحالة. كل صورة:
                   "mystc-1.png"
               أو مع وصف:
@@ -368,33 +369,62 @@ const PROJECTS = [
     },
 
     {
-        id: "energy",
-        year: "2025",
-        tags: ["JavaScript"],
+        id: "skyoffice",
+        year: "2026",
+        tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma"],
         cover: "",
         protoLink: "",
+        liveLink: "",   // ← رابط الموقع المنشور (مثلاً رابط Vercel) — إذا حطيته يطلع زر "زيارة الموقع"
         images: [],
         ar: {
-            title: "منصة شمس الحياة للطاقة",
-            desc: "منصة ويب تفاعلية لتتبع مؤشرات الطاقة الشمسية والاستدامة البيئية.",
-            role: "",
-            overview: "لوحة تحكم رقمية تعرض بيانات فورية عن كفاءة الألواح الشمسية ومعدلات توفير الطاقة للوحدات السكنية والتجارية.",
-            problem: "صعوبة قراءة وتحليل بيانات استهلاك الطاقة اليومية للمستفيدين غير المتخصصين.",
-            goal: "",
-            research: "تحويل البيانات المعقدة إلى رسوم بيانية تفاعلية سهلة الفهم مع تنبيهات ذكية للمستخدم.",
-            solution: "",
-            takeaways: "تحسين تجربة عرض البيانات البيئية بشكل بصري جذاب وسريع الاستجابة على مختلف الأجهزة.",
+            title: "سكاي أوفيس — منصة حجز وإدارة مساحات العمل",
+            desc: "منصة متكاملة لحجز المكاتب ومساحات العمل المشتركة، فيها لوحة إدارة للمشغّل وبوابة خاصة للعملاء.",
+            role: "تصميم وتطوير",
+            overview: "سكاي أوفيس منصة ويب كاملة (واجهة + خادم + قاعدة بيانات) لإدارة مساحات العمل المشتركة. تجمع في مكان واحد كل رحلة المستأجر: من اختيار المكتب على المخطط التفاعلي، إلى الحجز والدفع والعقد والفواتير والدعم.",
+            problem: [
+                "إدارة الحجوزات والعقود والفواتير تتم يدوياً وفي أدوات متفرقة",
+                "العميل ما يقدر يشوف المكاتب المتاحة ويحجز بنفسه",
+                "احتمال تضارب حجزين على نفس المساحة",
+                "صعوبة متابعة طلبات الدعم وبطاقات الدخول لكل عميل",
+            ],
+            goal: [
+                "بوابة عميل يختار فيها المكتب من المخطط ويحجز ويدفع بخطوات قليلة",
+                "لوحة إدارة واحدة للحجوزات والعقود والعملاء والفواتير والدعم",
+                "منع تداخل الحجوزات نهائياً حتى لو وصل طلبين بنفس اللحظة",
+            ],
+            research: "",
+            solution: [
+                "مخطط تفاعلي للطابق يعرض المساحات المتاحة وأسعارها، والتسعير يتغير تلقائياً (شهري لأقل من سنة، وسنوي لسنة فأكثر)",
+                "بوابة العميل: الحجز، الدفع، متابعة الحجوزات والفواتير، طلبات الدعم، وبطاقات الدخول",
+                "لوحة الإدارة: الحجوزات، العقود وتوثيقها في إيجار، العملاء، الفواتير الضريبية والسندات، الفروع، الفريق والصلاحيات",
+                "حماية على مستوى قاعدة البيانات تمنع تداخل الحجوزات، مع حد للطلبات وقفل الحساب بعد المحاولات الخاطئة",
+            ],
+            takeaways: "",
         },
         en: {
-            title: "Sun of Life Energy Platform",
-            desc: "An interactive web platform to track solar energy metrics and environmental sustainability.",
-            role: "",
-            overview: "A digital dashboard showing real-time data on solar panel efficiency and energy savings for residential and commercial units.",
-            problem: "Daily energy consumption data is hard for non-specialists to read and analyze.",
-            goal: "",
-            research: "Turning complex data into easy-to-understand interactive charts, with smart alerts for the user.",
-            solution: "",
-            takeaways: "A more engaging, responsive way to present environmental data across devices.",
+            title: "SkyOffice — Workspace Booking & Management Platform",
+            desc: "An end-to-end platform for booking offices and coworking spaces, with an admin dashboard for operators and a portal for clients.",
+            role: "Design & Development",
+            overview: "SkyOffice is a full-stack web platform (frontend, backend and database) for running coworking spaces. It brings the whole tenant journey into one place: picking an office on an interactive floor map, then booking, paying, signing the contract, invoices and support.",
+            problem: [
+                "Bookings, contracts and invoices were handled manually across scattered tools",
+                "Clients couldn't see available offices or book on their own",
+                "Risk of two bookings overlapping on the same space",
+                "Hard to track each client's support requests and access cards",
+            ],
+            goal: [
+                "A client portal to pick an office from the map, book and pay in a few steps",
+                "One admin dashboard for bookings, contracts, clients, invoices and support",
+                "Make overlapping bookings impossible, even when two requests arrive at the same moment",
+            ],
+            research: "",
+            solution: [
+                "An interactive floor map showing available spaces and prices, with automatic pricing (monthly under a year, yearly for a year or more)",
+                "Client portal: booking, payment, tracking bookings and invoices, support tickets and access cards",
+                "Admin dashboard: bookings, contracts with Ejar registration, clients, tax invoices and receipts, branches, team and permissions",
+                "Database-level protection against overlapping bookings, plus rate limiting and account lockout after failed logins",
+            ],
+            takeaways: "",
         },
     },
 ];
@@ -507,6 +537,7 @@ const UI = {
         "cs-solution": "الحل النهائي",
         "cs-takeaways": "الدروس المستفادة",
         "cs-proto": "عرض النموذج التفاعلي (Prototype)",
+        "cs-live": "زيارة الموقع",
         "cs-next": "المشروع التالي",
         "case": "دراسة حالة",
         "rights": "جميع الحقوق محفوظة",
@@ -542,6 +573,7 @@ const UI = {
         "cs-solution": "Final Solution",
         "cs-takeaways": "Key Takeaways",
         "cs-proto": "View Interactive Figma Prototype",
+        "cs-live": "Visit live site",
         "cs-next": "Next project",
         "case": "Case study",
         "rights": "All rights reserved",
@@ -689,7 +721,7 @@ function renderCase(id) {
         ['research', d.research],
     ].filter(([, v]) => !isEmpty(v));
 
-    const hasSolution = !isEmpty(d.solution) || (p.images && p.images.length) || p.protoLink;
+    const hasSolution = !isEmpty(d.solution) || (p.images && p.images.length) || p.protoLink || p.liveLink;
     let n = 0;
     const head = (key) => `
         <div class="flex items-baseline gap-3 mb-4">
@@ -736,10 +768,16 @@ function renderCase(id) {
             ${head('solution')}
             ${!isEmpty(d.solution) ? `<div class="text-[15px] text-muted leading-loose space-y-4 mb-6">${renderBlock(d.solution)}</div>` : ''}
             ${images ? `<div class="grid gap-6">${images}</div>` : ''}
+            ${p.protoLink || p.liveLink ? `<div class="mt-6 flex flex-wrap gap-3">` : ''}
             ${p.protoLink ? `
-            <a href="${esc(p.protoLink)}" target="_blank" rel="noopener" class="mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
+            <a href="${esc(p.protoLink)}" target="_blank" rel="noopener" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
                 <i class="fa-brands fa-figma"></i><span>${esc(t['cs-proto'])}</span>
             </a>` : ''}
+            ${p.liveLink ? `
+            <a href="${esc(p.liveLink)}" target="_blank" rel="noopener" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i><span>${esc(t['cs-live'])}</span>
+            </a>` : ''}
+            ${p.protoLink || p.liveLink ? `</div>` : ''}
         </section>` : ''}
 
         ${!isEmpty(d.takeaways) ? sec('takeaways', d.takeaways) : ''}
