@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">رائف عبدالسبحان | Raef Abdusubahn</title>
+    <meta name="description" content="معرض أعمال رائف عبدالسبحان — تجربة المستخدم وتفاعل الإنسان مع الحاسب">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for icons -->
@@ -12,586 +14,765 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dawod/thmanyah-font-web@1.2.0/index.css">
     <!-- Google Fonts: Inter for English -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
+        /* ===== الخطوط (نفس الخطوط الأصلية بدون تغيير) ===== */
         html[dir="rtl"] *, html[dir="rtl"] body, html[dir="rtl"] p, html[dir="rtl"] span, html[dir="rtl"] a, html[dir="rtl"] button, html[dir="rtl"] input, html[dir="rtl"] textarea, html[dir="rtl"] div {
             font-family: 'Thmanyah Sans', sans-serif !important;
         }
         html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4, html[dir="rtl"] h5, html[dir="rtl"] h6 {
             font-family: 'Thmanyah Serif Display', serif !important;
         }
-
         html[dir="ltr"] *, html[dir="ltr"] body, html[dir="ltr"] p, html[dir="ltr"] span, html[dir="ltr"] a, html[dir="ltr"] button, html[dir="ltr"] input, html[dir="ltr"] textarea, html[dir="ltr"] h1, html[dir="ltr"] h2, html[dir="ltr"] h3, html[dir="ltr"] h4 {
             font-family: 'Inter', sans-serif !important;
         }
+        /* Font Awesome icons need their own font */
+        html .fa-solid, html .fa-regular { font-family: 'Font Awesome 6 Free' !important; }
+        html .fa-brands { font-family: 'Font Awesome 6 Brands' !important; }
 
-        body {
-            background-color: #ffffff;
-            color: #111827;
+        /* ===== ألوان الموقع — غيّرها من هنا لو تبي ===== */
+        :root {
+            --ink: #0f172a;      /* لون النص الأساسي */
+            --muted: #64748b;    /* النص الثانوي */
+            --line: #e2e8f0;     /* الخطوط والحدود */
+            --soft: #f8fafc;     /* خلفيات البطاقات */
+            --accent: #2563eb;   /* اللون المميز (أزرق) */
+            --accent-soft: #eff6ff;
         }
+        body { background: #ffffff; color: var(--ink); }
+        ::selection { background: #dbeafe; }
+
+        .text-ink { color: var(--ink); }
+        .text-muted { color: var(--muted); }
+        .text-accent { color: var(--accent); }
+        .bg-accent { background: var(--accent); }
+        .bg-accent-soft { background: var(--accent-soft); }
+        .bg-soft { background: var(--soft); }
+        .border-line { border-color: var(--line); }
+
+        /* رقم القسم الصغير فوق العناوين */
+        .section-num { font-size: 12px; letter-spacing: .08em; color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+        /* حركة ظهور خفيفة */
+        @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+        .rise { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+        .rise-2 { animation-delay: .08s; } .rise-3 { animation-delay: .16s; } .rise-4 { animation-delay: .24s; }
+        @media (prefers-reduced-motion: reduce) { .rise { animation: none; } html { scroll-behavior: auto; } }
+
+        /* خلفية الهيرو */
+        .hero-glow {
+            background:
+                radial-gradient(600px 260px at 85% -10%, rgba(37,99,235,.10), transparent 70%),
+                radial-gradient(500px 240px at 0% 0%, rgba(14,165,233,.07), transparent 70%);
+        }
+        html[dir="ltr"] .hero-glow {
+            background:
+                radial-gradient(600px 260px at 15% -10%, rgba(37,99,235,.10), transparent 70%),
+                radial-gradient(500px 240px at 100% 0%, rgba(14,165,233,.07), transparent 70%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { scrollbar-width: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-blue-100 transition-colors duration-300">
+<body class="min-h-screen flex flex-col antialiased">
 
-    <!-- Header & Navigation -->
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 py-4 px-6">
-        <div class="max-w-3xl mx-auto flex items-center justify-between">
-            <a href="#" onclick="showHome()" class="font-bold text-lg text-gray-900 tracking-tight cursor-pointer" data-i18n="nav-name">معرض أعمال</a>
-            <nav class="hidden sm:flex items-center space-x-6 space-x-reverse text-sm font-medium text-gray-600" id="nav-links">
-                <a href="#projects" onclick="showHome(); scrollToSection('projects')" class="hover:text-blue-600 transition-colors" data-i18n="nav-projects">المشاريع</a>
-                <a href="#experiments" onclick="showHome(); scrollToSection('experiments')" class="hover:text-blue-600 transition-colors" data-i18n="nav-experiments">الخبرات</a>
-                <a href="#about" onclick="showHome(); scrollToSection('about')" class="hover:text-blue-600 transition-colors" data-i18n="nav-about">عني</a>
-                <a href="#resume" onclick="showHome(); scrollToSection('resume')" class="hover:text-blue-600 transition-colors" data-i18n="nav-resume">السيرة الذاتية</a>
+    <!-- ============ الهيدر ============ -->
+    <header class="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-line">
+        <div class="max-w-4xl mx-auto px-5 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-y-2">
+            <a href="#" class="flex items-center gap-2.5 font-bold text-ink">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                <span id="brand-name"></span>
+            </a>
+
+            <nav id="nav-links" class="order-last sm:order-none w-full sm:w-auto flex items-center gap-5 sm:gap-7 text-sm font-medium text-muted overflow-x-auto no-scrollbar">
+                <a href="#projects" class="hover:text-ink transition-colors whitespace-nowrap" data-i18n="nav-projects"></a>
+                <a href="#experience" class="hover:text-ink transition-colors whitespace-nowrap" data-i18n="nav-experience"></a>
+                <a href="#about" class="hover:text-ink transition-colors whitespace-nowrap" data-i18n="nav-about"></a>
+                <a href="#resume" class="hover:text-ink transition-colors whitespace-nowrap" data-i18n="nav-resume"></a>
             </nav>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleLanguage()" id="lang-btn" class="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all shadow-2xs">
-                    English
-                </button>
-            </div>
+
+            <button onclick="toggleLanguage()" class="text-xs font-semibold px-3.5 py-1.5 rounded-full border border-line hover:bg-soft text-ink transition-all" data-i18n="lang-btn"></button>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-3xl mx-auto px-6 w-full py-16 sm:py-24 space-y-24">
-        
-        <!-- Home View -->
-        <div id="home-view" class="space-y-24">
-            <!-- Hero Section -->
-            <section class="space-y-6">
-                <div class="flex items-center space-x-4 space-x-reverse">
-                    <img src="IMG_6871.JPG" alt="Avatar" class="w-16 h-16 rounded-full object-cover border border-gray-200 shadow-xs" onerror="this.src='https://placehold.co/120x120/111827/ffffff?text=RA'">
-                    <div>
-                        <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 mb-1" data-i18n="hero-badge">طالب</span>
-                        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900" data-i18n="hero-name">رائف عبدالسبحان</h1>
-                    </div>
-                </div>
-                <p class="text-lg text-gray-600 leading-relaxed max-w-2xl" data-i18n="hero-desc">
-                           باحث ومحب لمجال تجربة المستخدم وبناء المنتجات الرقمية
-                    وملم في تفاعل الانسان مع الحاسب
-                </p>
-                <div class="flex items-center gap-3 pt-2">
-                    <a href="#projects" onclick="scrollToSection('projects')" class="px-5 py-2.5 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-all shadow-xs" data-i18n="hero-btn-work">
-                        أحدث أعمالي
-                    </a>
-                    <a href= "https://wa.me/966557303473 " class="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-800 text-sm font-medium hover:bg-gray-200 transition-all" data-i18n="hero-btn-chat">
-                        تواصل معي
-                    </a>
-                </div>
-            </section>
+    <main class="flex-grow w-full">
 
-            <!-- Projects Section -->
-            <section id="projects" class="space-y-8 scroll-mt-24">
-                <div class="border-b border-gray-100 pb-4">
-                    <h2 class="text-xl font-bold text-gray-900" data-i18n="proj-title">المشاريع</h2>
-                    <p class="text-sm text-gray-500 mt-1" data-i18n="proj-subtitle">اضغط على أي مشروع للاطلاع على دراسة الحالة </p>
-                </div>
+        <!-- ============ الصفحة الرئيسية ============ -->
+        <div id="home-view">
 
-                <div class="space-y-6">
-                    <!-- Project 1 -->
-                    <div onclick="showCaseStudy('mystc')" class="group p-5 rounded-2xl border border-gray-100 hover:border-blue-300 transition-all bg-white shadow-2xs cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors" data-i18n="p1-title">إعادة تصميم تطبيق mystc</h3>
-                            <div class="flex items-center text-blue-600">
-                                <!-- Arrow on the left in RTL, right in LTR -->
-                                <i class="fa-solid fa-arrow-left text-xs rtl:inline ltr:hidden"></i>
-                                <i class="fa-solid fa-arrow-right text-xs ltr:inline rtl:hidden"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-4 leading-relaxed" data-i18n="p1-desc">
-                            دراسة شاملة لتجربة المستخدم وتطبيق واجهات متقدمة لتبسيط إدارة الحسابات وخدمات الاتصالات.
-                        </p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md">Figma</span>
-                            <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md">Figjam</span>
-                        </div>
+            <!-- Hero -->
+            <section class="hero-glow">
+                <div class="max-w-4xl mx-auto px-5 sm:px-6 pt-16 pb-20 sm:pt-24 sm:pb-28">
+                    <div class="flex items-center gap-4 rise">
+                        <img id="hero-avatar" src="" alt="" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover ring-4 ring-white shadow-lg shadow-slate-900/10" onerror="this.src='https://placehold.co/160x160/0f172a/ffffff?text=RA'">
+                        <span class="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-white border border-line text-ink shadow-sm">
+                            <span class="relative flex w-2 h-2"><span class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-60 animate-ping"></span><span class="relative inline-flex w-2 h-2 rounded-full bg-emerald-500"></span></span>
+                            <span id="hero-badge"></span>
+                        </span>
                     </div>
 
-                    <!-- Project 2 -->
-                    <div onclick="showCaseStudy('sports')" class="group p-5 rounded-2xl border border-gray-100 hover:border-blue-300 transition-all bg-white shadow-2xs cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors" data-i18n="p2-title">تطبيق حجز الملاعب الرياضية</h3>
-                            <div class="flex items-center text-blue-600">
-                                <i class="fa-solid fa-arrow-left text-xs rtl:inline ltr:hidden"></i>
-                                <i class="fa-solid fa-arrow-right text-xs ltr:inline rtl:hidden"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-4 leading-relaxed" data-i18n="p2-desc">
-                            تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.
-                        </p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md">Flutter</span>
-                            <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md">Dart</span>
-                            
-                            
-                        </div>
-                    </div>
+                    <h1 id="hero-name" class="mt-8 text-4xl sm:text-6xl font-bold tracking-tight text-ink leading-[1.15] rise rise-2"></h1>
+                    <p id="hero-role" class="mt-3 text-lg sm:text-xl text-accent font-medium rise rise-2"></p>
+                    <p id="hero-desc" class="mt-5 text-base sm:text-lg text-muted leading-loose max-w-2xl rise rise-3"></p>
 
-                    <!-- Project 3 -->
-                    <div onclick="showCaseStudy('energy')" class="group p-5 rounded-2xl border border-gray-100 hover:border-blue-300 transition-all bg-white shadow-2xs cursor-pointer">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors" data-i18n="p3-title">منصة شمس الحياة للطاقة</h3>
-                            <div class="flex items-center text-blue-600">
-                                <i class="fa-solid fa-arrow-left text-xs rtl:inline ltr:hidden"></i>
-                                <i class="fa-solid fa-arrow-right text-xs ltr:inline rtl:hidden"></i>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600 mb-4 leading-relaxed" data-i18n="p3-desc">
-                            منصة ويب تفاعلية لتتبع مؤشرات الطاقة الشمسية والاستدامة البيئية.
-                        </p>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md">JavaScript</span>
-                            
-                        </div>
+                    <div class="mt-9 flex flex-wrap items-center gap-3 rise rise-4">
+                        <a href="#projects" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition-all shadow-sm">
+                            <span data-i18n="hero-btn-work"></span>
+                            <i class="fa-solid fa-arrow-down text-xs"></i>
+                        </a>
+                        <a id="hero-chat" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-line text-ink text-sm font-medium hover:bg-soft transition-all">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                            <span data-i18n="hero-btn-chat"></span>
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <!-- Experiments Section -->
-            <section id="experiments" class="space-y-8 scroll-mt-24">
-                <div class="border-b border-gray-100 pb-4">
-                    <h2 class="text-xl font-bold text-gray-900" data-i18n="exp-title">الخبرات</h2>
-                    <p class="text-sm text-gray-500 mt-1" data-i18n="exp-subtitle"></p>
-                </div>
+            <div class="max-w-4xl mx-auto px-5 sm:px-6 space-y-24 sm:space-y-32 pb-24">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="p-5 rounded-2xl border border-gray-100 bg-gray-50/50">
-                        <h3 class="font-bold text-gray-900 text-sm mb-1" data-i18n="e1-title">شركة شمس طيبة لخدمات حجاج الداخل</h3>
-                        <p class="text-xs text-gray-600 mb-3" data-i18n="e1-desc">   باحث تجربة حاج،مسوول الجودة </p>
-                        <span class="text-xs text-blue-600 font-medium" data-i18n="e1-status">موسم حج ١٤٤٨</span>
+                <!-- Projects -->
+                <section id="projects" class="scroll-mt-28">
+                    <div class="mb-8">
+                        <span class="section-num">01</span>
+                        <h2 class="mt-1 text-2xl sm:text-3xl font-bold text-ink" data-i18n="proj-title"></h2>
+                        <p class="text-sm text-muted mt-2" data-i18n="proj-subtitle"></p>
                     </div>
-                    <div class="p-5 rounded-2xl border border-gray-100 bg-gray-50/50">
-                        <h3 class="font-bold text-gray-900 text-sm mb-1" data-i18n="e2-title">شركة شمس طيبة لخدمات حجاج الداخل</h3>
-                        <p class="text-xs text-gray-600 mb-3" data-i18n="e2-desc">باحث تجربة الحاج</p>
-                        <span class="text-xs text-blue-600 font-medium" data-i18n="e2-status">موسم حج ١٤٤٧</span>
+                    <!-- البطاقات تنبني تلقائياً من قائمة PROJECTS في السكربت -->
+                    <div id="projects-list" class="grid gap-4"></div>
+                </section>
+
+                <!-- Experience -->
+                <section id="experience" class="scroll-mt-28">
+                    <div class="mb-8">
+                        <span class="section-num">02</span>
+                        <h2 class="mt-1 text-2xl sm:text-3xl font-bold text-ink" data-i18n="exp-title"></h2>
                     </div>
-                </div>
-            </section>
+                    <!-- تنبني تلقائياً من قائمة EXPERIENCE -->
+                    <ol id="experience-list" class="relative border-s border-line ms-1.5 space-y-8"></ol>
+                </section>
 
-            <!-- About Section -->
-            <section id="about" class="space-y-6 scroll-mt-24">
-                <div class="border-b border-gray-100 pb-4">
-                    <h2 class="text-xl font-bold text-gray-900" data-i18n="about-title">عني</h2>
-                </div>
-                <div class="text-gray-600 text-sm leading-relaxed space-y-4">
-                    <p data-i18n="about-p1">
-                        أؤمن بأن تجربة المستخدم (UX) المتميزة تتجاوز مجرد الجوانب الجمالية؛ فهي تتمحور حول حل المشكلات الحقيقية، وتقليل العقبات، ومساعدة الأفراد على تحقيق أهدافهم من خلال تجارب رقمية تتسم بالسهولة والبديهية.
-بفضل خبرتي التي تمتد لخمس سنوات في مجال تصميم تجربة وواجهة المستخدم (UX/UI)، أركز على تحويل رؤى المستخدمين إلى حلول تصميمية ذات قيمة. تشمل مهاراتي: إجراء أبحاث المستخدمين، وهيكلة المعلومات، وإعداد خرائط المواقع (Sitemaps)، وتصميم مسارات المستخدم (User Flows)، وتصميم واجهات المستخدم، والتقييم الاستدلالي (Heuristic Evaluation).
-في مشروع إعادة تصميم منصة "MySTC"، كشفت أبحاث المستخدمين عن تحديات تتعلق بالتنقل، وتشتت الانتباه، والعبء الإدراكي. لذا، قمت بإعادة تنظيم المهام، وتحسين هيكلة المعلومات باستخدام خرائط المواقع، وتطوير الواجهات لتقديم تجربة أكثر وضوحاً وتنظيماً.
-أما في مشروع "Malaabik" -وهو تصور لتطبيق مخصص لحجز الملاعب الرياضية- فقد أجريت أبحاثاً حول المستخدمين، وطورت هيكلة المعلومات، وصممت مسارات مبسطة للمستخدم لتقليل الخطوات اللازمة لإنجاز المهام الأساسية. كما طبقت التقييم الاستدلالي لتحديد مشكلات سهولة الاستخدام وفرص التحسين.
-أنا شغوف بتصميم منتجات رقمية تتمحور حول المستخدم، وتوازن بين احتياجاته وأهداف العمل. أتطلع للتواصل مع أصحاب العمل، وفرق تطوير المنتجات، والعملاء الذين يقدرون التصميم المدروس القائم على الأبحاث
-                    </p>
-                    <p data-i18n="about-p2">
+                <!-- About -->
+                <section id="about" class="scroll-mt-28">
+                    <div class="mb-8">
+                        <span class="section-num">03</span>
+                        <h2 class="mt-1 text-2xl sm:text-3xl font-bold text-ink" data-i18n="about-title"></h2>
+                    </div>
+                    <!-- ينبني تلقائياً من ABOUT -->
+                    <div id="about-text" class="text-muted text-[15px] leading-loose space-y-5 max-w-3xl"></div>
+                    <div id="skills-list" class="mt-8 flex flex-wrap gap-2"></div>
+                </section>
 
-                    </p>
-                </div>
-            </section>
-
-            <!-- Resume Section -->
-            <section id="resume" class="space-y-6 scroll-mt-24">
-                <div class="border-b border-gray-100 pb-4 flex items-center justify-between">
-                    <h2 class="text-xl font-bold text-gray-900" data-i18n="resume-title">السيرة الذاتية</h2>
-                    <a href="javascript:void(0)" onclick="showNotification(currentLang === 'ar' ? 'جاري تحميل السيرة الذاتية...' : 'Downloading resume...')" class="text-xs font-semibold text-blue-600 hover:text-blue-800" data-i18n="resume-download">تحميل النسخة الكاملة</a>
-                </div>
-                
-                <div class="space-y-4 text-sm">
-                    <div class="flex justify-between items-start p-4 rounded-xl border border-gray-100">
+                <!-- Resume -->
+                <section id="resume" class="scroll-mt-28">
+                    <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
                         <div>
-                            <h3 class="font-bold text-gray-900" data-i18n="r1-title">بكالوريوس تفاعل الأنسان مع الحاسب </h3>
-                            <p class="text-gray-600 text-xs mt-0.5" data-i18n="r1-sub">جامعة أم القرى • كلية الحاسبات • قسم هندسة البرمجيات</p>
+                            <span class="section-num">04</span>
+                            <h2 class="mt-1 text-2xl sm:text-3xl font-bold text-ink" data-i18n="resume-title"></h2>
                         </div>
-                        <span class="text-xs text-gray-400" data-i18n="r1-date">متوقع 2028</span>
+                        <!-- يظهر هذا الزر فقط إذا حطيت ملف السيرة في SITE.resumeFile -->
+                        <a id="resume-download" href="#" download class="hidden items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl bg-accent-soft text-accent hover:bg-blue-100 transition-colors">
+                            <i class="fa-solid fa-download text-xs"></i>
+                            <span data-i18n="resume-download"></span>
+                        </a>
                     </div>
-                    <div class="flex justify-between items-start p-4 rounded-xl border border-gray-100">
-                        <div>
-                            <h3 class="font-bold text-gray-900" data-i18n="r2-title"> معسكر تجربة المستخدم</h3>
-                            <p class="text-gray-600 text-xs mt-0.5" data-i18n="r2-sub">نمكن</p>
-                        </div>
-                        <span class="text-xs text-gray-400" data-i18n="r2-date">2026</span>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Case Study View -->
-        <div id="case-study-view" class="hidden space-y-10">
-            <div>
-                <button onclick="showHome()" class="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 transition-all">
-                    <i class="fa-solid fa-arrow-right rtl:rotate-180"></i>
-                    <span data-i18n="cs-back">العودة للمشاريع</span>
-                </button>
-            </div>
-
-            <div class="space-y-4 border-b border-gray-100 pb-6">
-                <div class="flex items-center gap-2">
-                    <span id="cs-tag" class="text-xs font-semibold px-2.5 py-1 rounded-md bg-blue-50 text-blue-700"></span>
-                    <span id="cs-year" class="text-xs text-gray-400"></span>
-                </div>
-                <h1 id="cs-title" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">عنوان المشروع</h1>
-                <p id="cs-subtitle" class="text-base text-gray-600 leading-relaxed"></p>
-            </div>
-
-            <div class="space-y-3">
-                <h2 class="text-lg font-bold text-gray-900" data-i18n="cs-overview-title">1. نظرة عامة (Overview)</h2>
-                <p id="cs-overview-text" class="text-sm text-gray-600 leading-relaxed">
-                    
-                </p>
-            </div>
-
-            <div class="space-y-3">
-                <h2 class="text-lg font-bold text-gray-900" data-i18n="cs-problem-title">2. المشكلة  (Problem)</h2>
-                <p id="cs-problem-text" class="text-sm text-gray-600 leading-relaxed">
-                    
-                </p>
-            </div>
-            
-            <div class="space-y-3">
-                <h2 class="text-lg font-bold text-gray-900" data-i18n="cs-Goal-title">3. الهدف  (Goal)</h2>
-                <p id="cs-Goal-text" class="text-sm text-gray-600 leading-relaxed">
-                    م
-                </p>
-            </div>
-
-            <div class="space-y-3">
-                <h2 class="text-lg font-bold text-gray-900" data-i18n="cs-ux-title">4. أبحاث المستخدم (User Research )</h2>
-                <p id="cs-ux-text" class="text-sm text-gray-600 leading-relaxed">
-                   
-                </p>
-            </div>
-
-            <div class="space-y-4">
-                <h2 class="text-lg font-bold text-gray-900" data-i18n="cs-solution-title">5. الحل النهائي وتصميم واجهات المستخدم (Final Solution )</h2>
-                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center text-center space-y-3">
-                    <i class="fa-solid fa-image text-3xl text-gray-300"></i>
-                    <p class="text-xs text-gray-500" data-i18n="cs-screenshot-placeholder"> لقطات الشاشة للتصميم النهائي </p>
-                </div>
-                <!-- Figma Prototype Button -->
-                <div class="pt-2">
-                    <a id="cs-proto-link" href="#" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-xs">
-                        <i class="fa-brands fa-figma"></i>
-                        <span data-i18n="cs-proto-btn">(Prototype)</span>
-                    </a>
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <h2 class="text-lg font-bold text-gray-900" data-i18n="cs-takeaways-title">6. الدروس المستفادة (Key Takeaways)</h2>
-                <p id="cs-takeaways-text" class="text-sm text-gray-600 leading-relaxed">
-                    
-                </p>
+                    <!-- تنبني تلقائياً من قائمة RESUME -->
+                    <div id="resume-list" class="grid gap-3"></div>
+                </section>
             </div>
         </div>
 
+        <!-- ============ صفحة دراسة الحالة ============ -->
+        <!-- محتواها ينبني تلقائياً من بيانات المشروع في PROJECTS -->
+        <div id="case-study-view" class="hidden">
+            <div id="case-root" class="max-w-3xl mx-auto px-5 sm:px-6 pt-10 pb-24"></div>
+        </div>
     </main>
 
-    <!-- Footer with robust standalone SVG social icons and contact phone -->
-    <footer class="border-t border-gray-100 mt-auto py-10 px-6 text-sm text-gray-500">
-        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-                <p class="font-medium text-gray-900" data-i18n="footer-name">رائف عبدالسبحان</p>
-                <div class="flex items-center gap-3 text-xs mt-1">
-                    <span>rovr1427@gmail.com</span>
-                    <span class="text-gray-300">|</span>
-                    <a href="tel:0557303473" class="hover:text-blue-600 transition-colors font-medium">0557303473</a>
+    <!-- ============ الفوتر ============ -->
+    <footer id="contact" class="border-t border-line bg-soft">
+        <div class="max-w-4xl mx-auto px-5 sm:px-6 py-14">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-ink" data-i18n="footer-title"></h2>
+                    <p class="text-sm text-muted mt-2 max-w-md" data-i18n="footer-sub"></p>
+                    <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                        <a id="footer-email" href="#" class="text-ink font-medium hover:text-accent transition-colors"></a>
+                        <a id="footer-phone" href="#" class="text-ink font-medium hover:text-accent transition-colors" dir="ltr"></a>
+                    </div>
                 </div>
+                <!-- أيقونات التواصل تنبني من SITE.social -->
+                <div id="social-links" class="flex items-center gap-2.5"></div>
             </div>
-            <div class="flex items-center space-x-3 space-x-reverse">
-                <!-- LinkedIn Button with robust inline SVG -->
-                <a href="https://www.linkedin.com/in/raef-abdusubhan-51a190356?utm_source=share_via&utm_content=profile&utm_medium=member_ios
-" target="_blank" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors text-gray-700" title="LinkedIn">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                    </svg>
-                </a>
-                <!-- X (Twitter) Button with robust inline SVG -->
-                <a href="https://www.instagram.com/r.wt3?stkn=NnFlZDh5enI0cDI0&utm_source=qr" target="_blank" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors text-gray-700" title="X (Twitter)">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                </a>
-            </div>
+            <p class="mt-12 pt-6 border-t border-line text-xs text-muted" id="footer-copy"></p>
         </div>
     </footer>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
-        <span id="toast-msg">رسالة إشعار</span>
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+        <span id="toast-msg"></span>
     </div>
 
-    <!-- JavaScript Application Logic -->
-    <script>
-        const translations = {
-            ar: {
-                title: "رائف عبدالسبحان | Raef Abdusubahn",
-                "nav-name": "معرض أعمال",
-                "nav-projects": "المشاريع",
-                "nav-experiments": "الخبرات",
-                "nav-about": "عني",
-                "nav-resume": "السيرة الذاتية",
-                "lang-btn": "English",
-                "hero-badge": "جامعة أم القرى",
-                "hero-name": "رائف عبدالسبحان",
-                "hero-desc": "  باحث ومحب لمجال تجربة المستخدم وبناء المنتجات الرقمية وملم في تفاعل في تفاعل الانسان مع الحاسب ",
-                "hero-btn-work": "أحدث أعمالي",
-                "hero-btn-chat": "تواصل معي",
-                "proj-title": "المشاريع",
-                "proj-subtitle": "اضغط على أي مشروع للاطلاع على دراسة الحالة التفصيلية ",
-                "p1-title": "إعادة تصميم تطبيق mystc",
-                "p1-desc": "دراسة شاملة لتجربة المستخدم وتطبيق واجهات متقدمة لتبسيط إدارة الحسابات وخدمات الاتصالات.",
-                "p2-title": "تطبيق حجز الملاعب الرياضية",
-                "p2-desc": "تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.",
-                "p3-title": "منصة شمس الحياة للطاقة",
-                "p3-desc": "منصة ويب تفاعلية لتتبع مؤشرات الطاقة الشمسية والاستدامة البيئية.",
-                "exp-title": "الخبرات",
-                "exp-subtitle": "",
-                "e1-title": " ",
-                "e1-desc":"",
-                "e1-status": "",
-                "e2-title": "",
-                "e2-desc": "",
-                "e2-status": "",
-                "about-title": "عني",
-                "about-p1": " 
-                "about-p2":"",
-                "resume-title": "السيرة الذاتية",
-                "resume-download": "تحميل النسخة الكاملة",
-                "r1-title": "بكالوريوس تفاعل الأنسان مع الحاسب",
-                "r1-sub": "جامعة أم القرى  • كلية الحاسبات • قسم هندسة البرمجيات",
-                "r1-date": "متوقع 2028",
-                "r2-title": "معسكر تجربة المستخدم",
-                "r2-sub": "نمكن",
-                "r2-date": "2026",
-                "footer-name": "رائف عبدالسبحان",
-                "cs-back": "العودة للمشاريع",
-                "cs-overview-title": "1. نظرة عامة (Overview)",
-                "cs-problem-title": "2. المشكلة (Problem)",
-                "cs-Goal-title": "3. الاهداف (Goal)",
-                "cs-ux-title" : "4. رحلة المستخدم   (User Research )",
-                "cs-solution-title": "5. الحل النهائي  (Final Solution )",
-                "cs-takeaways-title": "6. الدروس المستفادة (Key Takeaways)",
-                "cs-screenshot-placeholder": "لقطات الشاشة للتصميم النهائي ",
-                "cs-proto-btn": "(Prototype)"
-            },
-            en: {
-                title: "Raef Abdusubahn | Portfolio",
-                "nav-name": "Portfolio",
-                "nav-projects": "Projects",
-                "nav-experiments": "Experiments",
-                "nav-about": "About",
-                "nav-resume": "Resume",
-                "lang-btn": "عربي",
-                "hero-badge": "Student",
-                "hero-name": "Raef Abdusubahn",
-                "hero-desc": "A researcher and enthusiast in the fields of user experience and digital product development, with knowledge of human-computer interaction.",
-                "hero-btn-work": "My latest work",
-                "hero-btn-chat": "Let's chat",
-                "proj-title": "Projects",
-                "proj-subtitle": "Click any project to view its detailed Case Study.",
-                "p1-title": "mystc App Redesign",
-                "p1-desc": "A comprehensive UX study and advanced interface implementation to simplify account management and telecom services.",
-                "p2-title": "Sports Court Booking App",
-                "p2-desc": "A mobile application built with Flutter to easily book and manage sports courts.",
-                "p3-title": "Sun of Life Energy Platform",
-                "p3-desc": "An interactive web platform to track solar energy metrics and environmental sustainability.",
-                "exp-title": "Experiments",
-                "exp-subtitle": " ",
-                "e1-title": "",
-                "e1-desc": "",
-                "e1-status": "",
-                "e2-title": "",
-                "e2-desc": "",
-                "e2-status": "",
-                "about-title": "About",
-                "about-p1": " I believe great UX goes beyond aesthetics — it’s about solving real problems, reducing friction, and helping people achieve their goals through intuitive digital experiences.
-                             "about-p2": " With 5 years of experience in UX/UI Design, I focus on transforming user insights into meaningful design solutions. My skills include user research, information architecture, sitemap creation, user flows, UI design, and heuristic evaluation.", 
-                              "about-p3": "  In my MySTC redesign project, user research revealed challenges related to navigation, distraction, and cognitive load. I reorganized tasks, improved the information architecture using a sitemap, and refined the interfaces to create a clearer and more structured experience.",
-                              "about-p4": "   In Malaabik, a sports-field booking app concept, I conducted user research, developed the information architecture, and created a simplified user flow to reduce the steps required to complete key tasks. I then applied heuristic evaluation to identify usability issues and opportunities for improvement.",
-                              "about-p5": "   I’m passionate about designing user-centered digital products that balance user needs with business goals. I’m open to connecting with employers, product teams, and clients who value thoughtful, research-driven design. ",
-                "about-p2": "",
-                "resume-title": "Resume",
-                "resume-download": "Download full resume",
-                "r1-title": "B.S. in Human-Computer Interaction",
-                "r1-sub": "Umm Al-Qura University • College of Computing • Software Engineering Department",
-                "r1-date": "Expected 2028",
-                "r2-title": "",
-                "r2-sub": "",
-                "r2-date": "2026",
-                "footer-name": "Raef Abdusubahn",
-                "cs-back": "Back to Projects",
-                "cs-overview-title": "1. Overview",
-                "cs-problem-title": "2. Problem ",
-                "cs-Goal-title": "3.  Goal",
-                "cs-ux-title": "4. User Research & UX Process",
-                "cs-solution-title": "5. Final Solution & Screenshots",
-                "cs-takeaways-title": "6. Key Takeaways",
-                "cs-screenshot-placeholder": "Interactive design wireframes & UI screenshot gallery",
-                "cs-proto-btn": "View Interactive Figma Prototype"
-            }
-        };
+<script>
+/* ╔══════════════════════════════════════════════════════════════════════╗
+   ║                      📝  دليل تعديل المحتوى                           ║
+   ║                                                                      ║
+   ║  كل محتوى الموقع موجود في هذا القسم فقط. ما تحتاج تلمس الـ HTML.        ║
+   ║                                                                      ║
+   ║  القواعد العامة:                                                      ║
+   ║  • كل نص يكون بين علامتي تنصيص:  "النص هنا"                            ║
+   ║  • بعد كل سطر فاصلة  ,                                                ║
+   ║  • لا تكتب النص على أكثر من سطر. لو تبي فقرة جديدة اكتب  \n\n  داخل النص ║
+   ║  • أي حقل تتركه فاضي ""  يختفي من الموقع تلقائياً (ما يطلع عنوان فاضي)  ║
+   ║  • ar = العربي ، en = الإنجليزي                                        ║
+   ║  • الصور: ارفع الصورة للريبو (نفس مكان index.html) واكتب اسمها هنا       ║
+   ║                                                                      ║
+   ║  بعد أي تعديل: افتح الموقع، ولو صار فاضي فغالباً نسيت فاصلة أو تنصيص.     ║
+   ╚══════════════════════════════════════════════════════════════════════╝ */
 
-        const caseStudiesData = {
-            mystc: {
-                protoLink: "https://www.figma.com/proto/nTtMzd6GYWAG6GuQjbMYgf/My-stc?node-id=43-3321&viewport=-2166%2C-454%2C0.25&t=XZml42pqXrO9gixf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=43%3A3235&show-proto-sidebar=1&page-id=31%3A214",
-                ar: {
-                    tag: "Figma • Figjma",
-                    year: "2026",
-                    title: "إعادة تصميم تطبيق mystc",
-                    subtitle: "دراسة شاملة لتجربة المستخدم وتطبيق واجهات متقدمة لتبسيط إدارة الحسابات وخدمات الاتصالات.",
-                    overview: "يهدف المشروع إلى إعادة هيكلة وتصميم تجربة المستخدم لتطبيق mystc لتقليل عدد الخطوات اللازمة لشحن الباقات وإدارة الفواتير، مع التركيز على مبادئ تفاعل الإنسان وآلة (HCI).",
-                    problem: [
-                                "ازدحام الواجهة",
-                                 "صعوبة العثور على بعض الخدمات",
-                                "بعض العمليات خطواتها كثيرة وغير منطقية",
-                                "كثرة الاشعارات المملة"
-                            ],
-                    Goal:[
-                                "	تقليل التعقيد وعدد الخطوات في تنفيذ العمليات",
-                                 " ⁠تسهيل الوصول إلى الخدمات الأساسية بسرعة",
-                                "تحسين وضوح وبساطة تجربة المستخدم داخل التطبيق."
 
-                            ],
-                    ux: "  ",
-                    takeaways:""
-                },
-                en: {
-                    tag: "Figma • figjam",
-                    year: "2026",
-                    title: "mystc App Redesign",
-                    subtitle: "A comprehensive UX study and advanced interface implementation to simplify account management and telecom services.",
-                    overview: " ",
-                    problem: "",
-                    Goal:"",
-                    ux: "",
-                    takeaways: ""
-                }
-            },
-            sports: {
-                protoLink: "https://www.figma.com/proto/nTtMzd6GYWAG6GuQjbMYgf/My-stc?node-id=43-3321&viewport=-2166%2C-454%2C0.25&t=XZml42pqXrO9gixf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=43%3A3235&show-proto-sidebar=1&page-id=31%3A214",
-                ar: {
-                    tag: "Flutter • Dart",
-                    year: "2026",
-                    title: "تطبيق حجز الملاعب الرياضية",
-                    subtitle: "تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.",
-                    overview: "منصة ذكية تربط بين أصحاب الملاعب الرياضية واللاعبين الراغبين في حجز الملاعب والمباريات بشكل سلس وموثوق.",
-                    problem: "عملية الحجز التقليدية عبر الاتصال الهاتفي غير منظمة وتؤدي غالباً لتضارب المواعيد وفقدان الإيرادات.",
-                    Goal:"",
-                    ux: "تصميم واجهة مستخدم مبسطة تعتمد على تقويم تفاعلي واختيار سريع للمواقع الجغرافية والأوقات المتاحة.",
-                    takeaways: "بناء هيكل برمجي نظيف وقابل للتوسع باستخدام إطار عمل Flutter مع دعم كامل للغة العربية والإنجليزية."
-                },
-                en: {
-                    tag: "Flutter • Dart",
-                    year: "2026",
-                    title: "Sports Court Booking App",
-                    subtitle: "",
-                    overview: "",
-                    problem: "",
-                    Goal:"",
-                    ux: "",
-                    takeaways: ""
-                }
-            },
-            energy: {
-                protoLink: "",
-                ar: {
-                    tag: "JavaScript • ",
-                    year: "2025",
-                    title: "منصة شمس الحياة للطاقة",
-                    subtitle: "منصة ويب تفاعلية لتتبع مؤشرات الطاقة الشمسية والاستدامة البيئية.",
-                    overview: "لوحة تحكم رقمية تعرض بيانات فورية عن كفاءة الألواح الشمسية ومعدلات توفير الطاقة للوحدات السكنية والتجارية.",
-                    problem: "صعوبة قراءة وتحليل بيانات استهلاك الطاقة اليومية للمستفيدين غير المتخصصين.",
-                     Goal:"",
-                    ux: "تحويل البيانات المعقدة إلى رسوم بيانية تفاعلية سهلة الفهم مع تنبيهات ذكية للمستخدم.",
-                    takeaways: "تحسين تجربة عرض البيانات البيئية بشكل بصري جذاب وسريع الاستجابة على مختلف الأجهزة."
-                },
-                en: {
-                    tag: "JavaScript • ",
-                    year: "2025",
-                    title: "Sun of Life Energy Platform",
-                    subtitle: "",
-                    overview: "",
-                    problem: "", 
-                    Goal:"",
-                    ux: "",
-                    takeaways: ""
-                }
-            }
-        };
+/* ───────────────────────── 1) معلوماتك الأساسية ───────────────────────── */
+const SITE = {
+    avatar: "IMG_6871.JPG",            // صورتك الشخصية
+    resumeFile: "",                    // ارفع سيرتك PDF واكتب اسمها هنا مثل "cv.pdf" — إذا فاضي يختفي زر التحميل
+    email: "rovr1427@gmail.com",
+    phone: "0557303473",
+    whatsapp: "966557303473",          // رقم الواتساب بالصيغة الدولية بدون + أو مسافات
 
-        let currentLang = 'ar';
-        let currentProjectId = null;
+    // روابط التواصل: لإضافة حساب جديد انسخ سطر وغيّر icon و url
+    // أيقونات متاحة: linkedin-in, instagram, x-twitter, github, behance, dribbble, figma, medium
+    social: [
+        { icon: "linkedin-in", label: "LinkedIn",  url: "https://www.linkedin.com/in/raef-abdusubhan-51a190356" },
+        { icon: "instagram",   label: "Instagram", url: "https://www.instagram.com/r.wt3" },
+        // { icon: "behance", label: "Behance", url: "https://www.behance.net/..." },
+    ],
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'ar' ? 'en' : 'ar';
-            
-            document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-            document.documentElement.setAttribute('lang', currentLang);
+    ar: {
+        name: "رائف عبدالسبحان",
+        badge: "طالب · جامعة أم القرى",
+        role: "مصمم وباحث تجربة المستخدم",
+        desc: "باحث ومحب لمجال تجربة المستخدم وبناء المنتجات الرقمية، وملمّ بتفاعل الإنسان مع الحاسب.",
+    },
+    en: {
+        name: "Raef Abdusubahn",
+        badge: "Student · Umm Al-Qura University",
+        role: "UX Designer & Researcher",
+        desc: "A researcher and enthusiast in user experience and digital product development, with knowledge of human-computer interaction.",
+    },
+};
 
-            const navLinks = document.getElementById('nav-links');
-            if (currentLang === 'ar') {
-                navLinks.className = "hidden sm:flex items-center space-x-6 space-x-reverse text-sm font-medium text-gray-600";
-            } else {
-                navLinks.className = "hidden sm:flex items-center space-x-6 text-sm font-medium text-gray-600";
-            }
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) {
-                    el.textContent = translations[currentLang][key];
-                }
-            });
+/* ───────────────────────── 2) المشاريع ─────────────────────────
+   لإضافة مشروع جديد: انسخ مشروع كامل من { إلى }, والصقه، وغيّر الـ id لاسم جديد بالإنجليزي بدون مسافات.
+   ترتيب المشاريع في الموقع = ترتيبها هنا.
 
-            document.getElementById('page-title').textContent = translations[currentLang].title;
+   الحقول:
+   id         اسم مختصر بالإنجليزي (يطلع في الرابط مثل  #/project/mystc)
+   year       السنة
+   tags       الأدوات المستخدمة
+   cover      صورة غلاف للبطاقة (اختياري) مثل "mystc-cover.png"
+   protoLink  رابط البروتوتايب في فيجما (اختياري)
+   images     صور التصميم النهائي داخل دراسة الحالة. كل صورة:
+                  "mystc-1.png"
+              أو مع وصف:
+                  { src: "mystc-1.png", ar: "الصفحة الرئيسية", en: "Home screen" }
 
-            if (currentProjectId) {
-                renderCaseStudyContent(currentProjectId);
-            }
-        }
+   داخل ar و en:
+   title      عنوان المشروع
+   desc       وصف قصير يطلع في البطاقة
+   role       دورك في المشروع (اختياري)
+   overview   نظرة عامة
+   problem    المشكلة      ← نص  ""  أو قائمة نقاط  [ "نقطة", "نقطة" ]
+   goal       الأهداف      ← نص أو قائمة نقاط
+   research   أبحاث المستخدم ← نص أو قائمة نقاط
+   solution   شرح الحل النهائي ← نص أو قائمة نقاط
+   takeaways  الدروس المستفادة ← نص أو قائمة نقاط
+─────────────────────────────────────────────────────────────── */
+const PROJECTS = [
+    {
+        id: "mystc",
+        year: "2026",
+        tags: ["Figma", "FigJam"],
+        cover: "",
+        protoLink: "https://www.figma.com/proto/nTtMzd6GYWAG6GuQjbMYgf/My-stc?node-id=43-3321&viewport=-2166%2C-454%2C0.25&t=XZml42pqXrO9gixf-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=43%3A3235&show-proto-sidebar=1&page-id=31%3A214",
+        images: [
+            // "mystc-1.png",
+            // { src: "mystc-2.png", ar: "صفحة الباقات", en: "Plans screen" },
+        ],
+        ar: {
+            title: "إعادة تصميم تطبيق mystc",
+            desc: "دراسة شاملة لتجربة المستخدم وتطبيق واجهات متقدمة لتبسيط إدارة الحسابات وخدمات الاتصالات.",
+            role: "",
+            overview: "يهدف المشروع إلى إعادة هيكلة وتصميم تجربة المستخدم لتطبيق mystc لتقليل عدد الخطوات اللازمة لشحن الباقات وإدارة الفواتير، مع التركيز على مبادئ تفاعل الإنسان مع الحاسب (HCI).",
+            problem: [
+                "ازدحام الواجهة",
+                "صعوبة العثور على بعض الخدمات",
+                "بعض العمليات خطواتها كثيرة وغير منطقية",
+                "كثرة الإشعارات المزعجة",
+            ],
+            goal: [
+                "تقليل التعقيد وعدد الخطوات في تنفيذ العمليات",
+                "تسهيل الوصول إلى الخدمات الأساسية بسرعة",
+                "تحسين وضوح وبساطة تجربة المستخدم داخل التطبيق",
+            ],
+            research: "",
+            solution: "",
+            takeaways: "",
+        },
+        en: {
+            title: "mystc App Redesign",
+            desc: "A comprehensive UX study and interface redesign to simplify account management and telecom services.",
+            role: "",
+            overview: "This project restructures and redesigns the mystc user experience to reduce the steps needed to recharge plans and manage bills, with a focus on human-computer interaction (HCI) principles.",
+            problem: [
+                "A cluttered interface",
+                "Some services are hard to find",
+                "Some tasks take too many illogical steps",
+                "Too many irrelevant notifications",
+            ],
+            goal: [
+                "Reduce complexity and the number of steps to complete tasks",
+                "Make core services quick to reach",
+                "Improve the clarity and simplicity of the in-app experience",
+            ],
+            research: "",
+            solution: "",
+            takeaways: "",
+        },
+    },
 
-        function showHome() {
-            currentProjectId = null;
-            document.getElementById('home-view').classList.remove('hidden');
-            document.getElementById('case-study-view').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    {
+        id: "sports",
+        year: "2026",
+        tags: ["Flutter", "Dart"],
+        cover: "",
+        protoLink: "",   // ← حط رابط بروتوتايب الملاعب هنا (كان مكرر رابط mystc)
+        images: [],
+        ar: {
+            title: "تطبيق حجز الملاعب الرياضية",
+            desc: "تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.",
+            role: "",
+            overview: "منصة ذكية تربط بين أصحاب الملاعب الرياضية واللاعبين الراغبين في حجز الملاعب والمباريات بشكل سلس وموثوق.",
+            problem: "عملية الحجز التقليدية عبر الاتصال الهاتفي غير منظمة وتؤدي غالباً لتضارب المواعيد وفقدان الإيرادات.",
+            goal: "",
+            research: "تصميم واجهة مستخدم مبسطة تعتمد على تقويم تفاعلي واختيار سريع للمواقع الجغرافية والأوقات المتاحة.",
+            solution: "",
+            takeaways: "بناء هيكل برمجي نظيف وقابل للتوسع باستخدام إطار عمل Flutter مع دعم كامل للغة العربية والإنجليزية.",
+        },
+        en: {
+            title: "Sports Field Booking App",
+            desc: "A mobile app built with Flutter to easily book and manage sports fields.",
+            role: "",
+            overview: "A smart platform connecting sports field owners with players who want to book fields and matches smoothly and reliably.",
+            problem: "Traditional booking over the phone is disorganized and often leads to double bookings and lost revenue.",
+            goal: "",
+            research: "A simplified interface built around an interactive calendar and quick selection of locations and available times.",
+            solution: "",
+            takeaways: "Building a clean, scalable codebase with Flutter, with full Arabic and English support.",
+        },
+    },
 
-        function showCaseStudy(projectId) {
-            currentProjectId = projectId;
-            document.getElementById('home-view').classList.add('hidden');
-            document.getElementById('case-study-view').classList.remove('hidden');
-            renderCaseStudyContent(projectId);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    {
+        id: "energy",
+        year: "2025",
+        tags: ["JavaScript"],
+        cover: "",
+        protoLink: "",
+        images: [],
+        ar: {
+            title: "منصة شمس الحياة للطاقة",
+            desc: "منصة ويب تفاعلية لتتبع مؤشرات الطاقة الشمسية والاستدامة البيئية.",
+            role: "",
+            overview: "لوحة تحكم رقمية تعرض بيانات فورية عن كفاءة الألواح الشمسية ومعدلات توفير الطاقة للوحدات السكنية والتجارية.",
+            problem: "صعوبة قراءة وتحليل بيانات استهلاك الطاقة اليومية للمستفيدين غير المتخصصين.",
+            goal: "",
+            research: "تحويل البيانات المعقدة إلى رسوم بيانية تفاعلية سهلة الفهم مع تنبيهات ذكية للمستخدم.",
+            solution: "",
+            takeaways: "تحسين تجربة عرض البيانات البيئية بشكل بصري جذاب وسريع الاستجابة على مختلف الأجهزة.",
+        },
+        en: {
+            title: "Sun of Life Energy Platform",
+            desc: "An interactive web platform to track solar energy metrics and environmental sustainability.",
+            role: "",
+            overview: "A digital dashboard showing real-time data on solar panel efficiency and energy savings for residential and commercial units.",
+            problem: "Daily energy consumption data is hard for non-specialists to read and analyze.",
+            goal: "",
+            research: "Turning complex data into easy-to-understand interactive charts, with smart alerts for the user.",
+            solution: "",
+            takeaways: "A more engaging, responsive way to present environmental data across devices.",
+        },
+    },
+];
 
-        function renderCaseStudyContent(projectId) {
-            const project = caseStudiesData[projectId];
-            const data = project[currentLang];
-            document.getElementById('cs-tag').textContent = data.tag;
-            document.getElementById('cs-year').textContent = data.year;
-            document.getElementById('cs-title').textContent = data.title;
-            document.getElementById('cs-subtitle').textContent = data.subtitle;
-            document.getElementById('cs-overview-text').textContent = data.overview;
-            document.getElementById('cs-problem-text').textContent = data.problem;
-            document.getElementById('cs-ux-text').textContent = data.ux;
-            document.getElementById('cs-takeaways-text').textContent = data.takeaways;
-            document.getElementById('cs-proto-link').setAttribute('href', project.protoLink);
-        }
 
-        function scrollToSection(sectionId) {
-            const el = document.getElementById(sectionId);
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
+/* ───────────────────────── 3) الخبرات ─────────────────────────
+   لإضافة خبرة: انسخ { ... } والصقها. الأحدث فوق.
+─────────────────────────────────────────────────────────────── */
+const EXPERIENCE = [
+    {
+        ar: { org: "شركة شمس طيبة لخدمات حجاج الداخل", role: "باحث تجربة الحاج، مسؤول الجودة", date: "موسم حج ١٤٤٨" },
+        en: { org: "Shams Taiba Company for Domestic Pilgrim Services", role: "Pilgrim Experience Researcher, Quality Officer", date: "Hajj Season 1448 AH" },
+    },
+    {
+        ar: { org: "شركة شمس طيبة لخدمات حجاج الداخل", role: "باحث تجربة الحاج", date: "موسم حج ١٤٤٧" },
+        en: { org: "Shams Taiba Company for Domestic Pilgrim Services", role: "Pilgrim Experience Researcher", date: "Hajj Season 1447 AH" },
+    },
+];
 
-        function showNotification(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = msg;
-            toast.classList.remove('opacity-0', 'pointer-events-none');
-            toast.classList.add('opacity-100');
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                toast.classList.add('opacity-0', 'pointer-events-none');
-            }, 3000);
-        }
-    </script>
+
+/* ───────────────────────── 4) عني ─────────────────────────
+   كل عنصر في القائمة = فقرة مستقلة. أضف أو احذف فقرات براحتك.
+   skills = المهارات اللي تطلع كشارات تحت النص (اختياري)
+─────────────────────────────────────────────────────────────── */
+const ABOUT = {
+    ar: [
+        "أؤمن بأن تجربة المستخدم (UX) المتميزة تتجاوز مجرد الجوانب الجمالية؛ فهي تتمحور حول حل المشكلات الحقيقية، وتقليل العقبات، ومساعدة الأفراد على تحقيق أهدافهم من خلال تجارب رقمية تتسم بالسهولة والبديهية.",
+        "بفضل خبرتي التي تمتد لخمس سنوات في مجال تصميم تجربة وواجهة المستخدم (UX/UI)، أركز على تحويل رؤى المستخدمين إلى حلول تصميمية ذات قيمة. تشمل مهاراتي: إجراء أبحاث المستخدمين، وهيكلة المعلومات، وإعداد خرائط المواقع (Sitemaps)، وتصميم مسارات المستخدم (User Flows)، وتصميم واجهات المستخدم، والتقييم الاستدلالي (Heuristic Evaluation).",
+        "في مشروع إعادة تصميم منصة \"MySTC\"، كشفت أبحاث المستخدمين عن تحديات تتعلق بالتنقل، وتشتت الانتباه، والعبء الإدراكي. لذا، قمت بإعادة تنظيم المهام، وتحسين هيكلة المعلومات باستخدام خرائط المواقع، وتطوير الواجهات لتقديم تجربة أكثر وضوحاً وتنظيماً.",
+        "أما في مشروع \"Malaabik\" -وهو تصور لتطبيق مخصص لحجز الملاعب الرياضية- فقد أجريت أبحاثاً حول المستخدمين، وطورت هيكلة المعلومات، وصممت مسارات مبسطة للمستخدم لتقليل الخطوات اللازمة لإنجاز المهام الأساسية. كما طبقت التقييم الاستدلالي لتحديد مشكلات سهولة الاستخدام وفرص التحسين.",
+        "أنا شغوف بتصميم منتجات رقمية تتمحور حول المستخدم، وتوازن بين احتياجاته وأهداف العمل. أتطلع للتواصل مع أصحاب العمل، وفرق تطوير المنتجات، والعملاء الذين يقدرون التصميم المدروس القائم على الأبحاث.",
+    ],
+    en: [
+        "I believe great UX goes beyond aesthetics — it’s about solving real problems, reducing friction, and helping people achieve their goals through intuitive digital experiences.",
+        "With 5 years of experience in UX/UI Design, I focus on transforming user insights into meaningful design solutions. My skills include user research, information architecture, sitemap creation, user flows, UI design, and heuristic evaluation.",
+        "In my MySTC redesign project, user research revealed challenges related to navigation, distraction, and cognitive load. I reorganized tasks, improved the information architecture using a sitemap, and refined the interfaces to create a clearer and more structured experience.",
+        "In Malaabik, a sports-field booking app concept, I conducted user research, developed the information architecture, and created a simplified user flow to reduce the steps required to complete key tasks. I then applied heuristic evaluation to identify usability issues and opportunities for improvement.",
+        "I’m passionate about designing user-centered digital products that balance user needs with business goals. I’m open to connecting with employers, product teams, and clients who value thoughtful, research-driven design.",
+    ],
+    skills: ["User Research", "Information Architecture", "Sitemaps", "User Flows", "UI Design", "Heuristic Evaluation", "Figma", "FigJam"],
+};
+
+
+/* ───────────────────────── 5) السيرة الذاتية (التعليم والدورات) ─────────────────────────
+   icon: graduation-cap (تعليم) ، award (شهادة) ، laptop-code (معسكر/دورة) ، briefcase (عمل)
+─────────────────────────────────────────────────────────────── */
+const RESUME = [
+    {
+        icon: "graduation-cap",
+        ar: { title: "بكالوريوس تفاعل الإنسان مع الحاسب", sub: "جامعة أم القرى • كلية الحاسبات • قسم هندسة البرمجيات", date: "متوقع 2028" },
+        en: { title: "B.S. in Human-Computer Interaction", sub: "Umm Al-Qura University • College of Computing • Software Engineering Department", date: "Expected 2028" },
+    },
+    {
+        icon: "laptop-code",
+        ar: { title: "معسكر تجربة المستخدم", sub: "نمكّن", date: "2026" },
+        en: { title: "UX Bootcamp", sub: "Namakkin", date: "2026" },
+    },
+];
+
+
+/* ───────────────────────── 6) نصوص الواجهة الثابتة ─────────────────────────
+   عناوين الأقسام والأزرار. عدّلها لو تبي تغير الكلام.
+─────────────────────────────────────────────────────────────── */
+const UI = {
+    ar: {
+        "lang-btn": "English",
+        "nav-projects": "المشاريع",
+        "nav-experience": "الخبرات",
+        "nav-about": "عني",
+        "nav-resume": "السيرة الذاتية",
+        "hero-btn-work": "أحدث أعمالي",
+        "hero-btn-chat": "تواصل معي",
+        "proj-title": "المشاريع",
+        "proj-subtitle": "اضغط على أي مشروع للاطلاع على دراسة الحالة التفصيلية",
+        "exp-title": "الخبرات",
+        "about-title": "عني",
+        "resume-title": "السيرة الذاتية",
+        "resume-download": "تحميل السيرة الذاتية",
+        "footer-title": "خلنا نتواصل",
+        "footer-sub": "عندك مشروع أو فرصة تدريب أو عمل؟ يسعدني أسمع منك.",
+        "cs-back": "العودة للمشاريع",
+        "cs-role": "دوري",
+        "cs-year": "السنة",
+        "cs-tools": "الأدوات",
+        "cs-overview": "نظرة عامة",
+        "cs-problem": "المشكلة",
+        "cs-goal": "الأهداف",
+        "cs-research": "أبحاث المستخدم",
+        "cs-solution": "الحل النهائي",
+        "cs-takeaways": "الدروس المستفادة",
+        "cs-proto": "عرض النموذج التفاعلي (Prototype)",
+        "cs-next": "المشروع التالي",
+        "case": "دراسة حالة",
+        "rights": "جميع الحقوق محفوظة",
+    },
+    en: {
+        "lang-btn": "عربي",
+        "nav-projects": "Projects",
+        "nav-experience": "Experience",
+        "nav-about": "About",
+        "nav-resume": "Resume",
+        "hero-btn-work": "My latest work",
+        "hero-btn-chat": "Let's chat",
+        "proj-title": "Projects",
+        "proj-subtitle": "Click any project to view its detailed case study.",
+        "exp-title": "Experience",
+        "about-title": "About",
+        "resume-title": "Resume",
+        "resume-download": "Download resume",
+        "footer-title": "Let's connect",
+        "footer-sub": "Have a project, internship, or role in mind? I'd love to hear from you.",
+        "cs-back": "Back to projects",
+        "cs-role": "Role",
+        "cs-year": "Year",
+        "cs-tools": "Tools",
+        "cs-overview": "Overview",
+        "cs-problem": "Problem",
+        "cs-goal": "Goals",
+        "cs-research": "User Research",
+        "cs-solution": "Final Solution",
+        "cs-takeaways": "Key Takeaways",
+        "cs-proto": "View Interactive Figma Prototype",
+        "cs-next": "Next project",
+        "case": "Case study",
+        "rights": "All rights reserved",
+    },
+};
+
+
+/* ════════════════════════════════════════════════════════════════════
+   ⚙️  من هنا وتحت = كود تشغيل الموقع. ما تحتاج تعدل شي تحت هذا الخط.
+   ════════════════════════════════════════════════════════════════════ */
+
+let lang = 'ar';
+try { if (localStorage.getItem('lang') === 'en') lang = 'en'; } catch (e) {}
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const isEmpty = (v) => v == null || (Array.isArray(v) ? v.every(x => !String(x).trim()) : !String(v).trim());
+const pad = (n) => String(n).padStart(2, '0');
+const arrow = '<i class="fa-solid fa-arrow-right text-xs rtl:-scale-x-100"></i>';
+
+// يعرض النص كفقرات أو القائمة كنقاط
+function renderBlock(v) {
+    if (Array.isArray(v)) {
+        return `<ul class="space-y-3">${v.filter(x => String(x).trim()).map(x =>
+            `<li class="flex gap-3"><span class="mt-2.5 w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span><span>${esc(x)}</span></li>`
+        ).join('')}</ul>`;
+    }
+    return String(v).split(/\n\s*\n/).map(p => `<p>${esc(p.trim())}</p>`).join('');
+}
+
+function renderStatic() {
+    const t = UI[lang], s = SITE[lang];
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
+    $('page-title').textContent = lang === 'ar' ? `${SITE.ar.name} | ${SITE.en.name}` : `${SITE.en.name} | Portfolio`;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (t[k] != null) el.textContent = t[k];
+    });
+
+    $('brand-name').textContent = s.name;
+    $('hero-avatar').src = SITE.avatar;
+    $('hero-avatar').alt = s.name;
+    $('hero-badge').textContent = s.badge;
+    $('hero-name').textContent = s.name;
+    $('hero-role').textContent = s.role;
+    $('hero-desc').textContent = s.desc;
+    $('hero-chat').href = `https://wa.me/${SITE.whatsapp}`;
+
+    const dl = $('resume-download');
+    if (SITE.resumeFile) { dl.href = SITE.resumeFile; dl.classList.remove('hidden'); dl.classList.add('inline-flex'); }
+
+    $('footer-email').textContent = SITE.email;
+    $('footer-email').href = `mailto:${SITE.email}`;
+    $('footer-phone').textContent = SITE.phone;
+    $('footer-phone').href = `tel:${SITE.phone}`;
+    $('footer-copy').textContent = `© ${new Date().getFullYear()} ${s.name} — ${t.rights}`;
+
+    $('social-links').innerHTML = [
+        { icon: 'whatsapp', label: 'WhatsApp', url: `https://wa.me/${SITE.whatsapp}` },
+        ...SITE.social,
+    ].map(x => `
+        <a href="${esc(x.url)}" target="_blank" rel="noopener" title="${esc(x.label)}" aria-label="${esc(x.label)}"
+           class="w-11 h-11 rounded-xl bg-white border border-line hover:border-slate-300 hover:-translate-y-0.5 flex items-center justify-center text-ink transition-all">
+            <i class="fa-brands fa-${esc(x.icon)}"></i>
+        </a>`).join('');
+}
+
+function renderProjects() {
+    $('projects-list').innerHTML = PROJECTS.map((p, i) => {
+        const d = p[lang];
+        return `
+        <a href="#/project/${esc(p.id)}" class="group block rounded-2xl border border-line bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/5 transition-all overflow-hidden">
+            ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(d.title)}" class="w-full aspect-[16/8] object-cover bg-soft">` : ''}
+            <div class="p-6 sm:p-7 flex gap-5">
+                <span class="section-num pt-1.5 hidden sm:block">${pad(i + 1)}</span>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between gap-4">
+                        <h3 class="text-lg sm:text-xl font-bold text-ink group-hover:text-accent transition-colors">${esc(d.title)}</h3>
+                        <span class="w-9 h-9 shrink-0 rounded-full border border-line flex items-center justify-center text-ink group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all">${arrow}</span>
+                    </div>
+                    <p class="mt-2 text-sm text-muted leading-relaxed">${esc(d.desc)}</p>
+                    <div class="mt-5 flex flex-wrap items-center gap-2">
+                        ${p.tags.map(tg => `<span class="text-xs bg-soft border border-line text-slate-600 px-2.5 py-1 rounded-md" dir="ltr">${esc(tg)}</span>`).join('')}
+                        <span class="text-xs text-muted ms-auto tabular-nums">${esc(p.year)}</span>
+                    </div>
+                </div>
+            </div>
+        </a>`;
+    }).join('');
+}
+
+function renderExperience() {
+    $('experience-list').innerHTML = EXPERIENCE.map(x => {
+        const d = x[lang];
+        return `
+        <li class="ps-7 relative">
+            <span class="absolute -start-[7px] top-1.5 w-3.5 h-3.5 rounded-full bg-white border-[3px] border-[color:var(--accent)]"></span>
+            <span class="text-xs font-semibold text-accent">${esc(d.date)}</span>
+            <h3 class="mt-1 text-base sm:text-lg font-bold text-ink">${esc(d.org)}</h3>
+            <p class="mt-1 text-sm text-muted">${esc(d.role)}</p>
+        </li>`;
+    }).join('');
+}
+
+function renderAbout() {
+    $('about-text').innerHTML = ABOUT[lang].filter(p => p.trim()).map((p, i) =>
+        `<p class="${i === 0 ? 'text-lg sm:text-xl text-ink leading-relaxed' : ''}">${esc(p)}</p>`).join('');
+    $('skills-list').innerHTML = (ABOUT.skills || []).map(s =>
+        `<span class="text-xs font-medium px-3 py-1.5 rounded-full bg-accent-soft text-accent" dir="ltr">${esc(s)}</span>`).join('');
+}
+
+function renderResume() {
+    $('resume-list').innerHTML = RESUME.map(r => {
+        const d = r[lang];
+        return `
+        <div class="flex gap-4 items-start p-5 rounded-2xl border border-line bg-white">
+            <span class="w-10 h-10 shrink-0 rounded-xl bg-soft border border-line flex items-center justify-center text-accent"><i class="fa-solid fa-${esc(r.icon || 'circle')} text-sm"></i></span>
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 class="font-bold text-ink">${esc(d.title)}</h3>
+                    <span class="text-xs text-muted tabular-nums">${esc(d.date)}</span>
+                </div>
+                <p class="text-sm text-muted mt-1 leading-relaxed">${esc(d.sub)}</p>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function renderCase(id) {
+    const idx = PROJECTS.findIndex(p => p.id === id);
+    const p = PROJECTS[idx], d = p[lang], t = UI[lang];
+    const next = PROJECTS[(idx + 1) % PROJECTS.length];
+
+    // الأقسام تظهر فقط إذا فيها محتوى، والترقيم يتعدل تلقائياً
+    const sections = [
+        ['overview', d.overview], ['problem', d.problem], ['goal', d.goal],
+        ['research', d.research],
+    ].filter(([, v]) => !isEmpty(v));
+
+    const hasSolution = !isEmpty(d.solution) || (p.images && p.images.length) || p.protoLink;
+    let n = 0;
+    const head = (key) => `
+        <div class="flex items-baseline gap-3 mb-4">
+            <span class="section-num">${pad(++n)}</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-ink">${esc(t['cs-' + key])}</h2>
+        </div>`;
+    const sec = (key, v) => `<section class="py-9 border-t border-line">${head(key)}<div class="text-[15px] text-muted leading-loose space-y-4">${renderBlock(v)}</div></section>`;
+
+    const images = (p.images || []).map(im => {
+        const src = typeof im === 'string' ? im : im.src;
+        const cap = typeof im === 'string' ? '' : (im[lang] || '');
+        return `<figure class="space-y-2">
+            <img src="${esc(src)}" alt="${esc(cap || d.title)}" loading="lazy" class="w-full rounded-2xl border border-line bg-soft">
+            ${cap ? `<figcaption class="text-xs text-muted text-center">${esc(cap)}</figcaption>` : ''}
+        </figure>`;
+    }).join('');
+
+    const meta = [
+        [t['cs-year'], esc(p.year)],
+        [t['cs-tools'], `<span dir="ltr">${p.tags.map(esc).join(' · ')}</span>`],
+        d.role ? [t['cs-role'], esc(d.role)] : null,
+    ].filter(Boolean);
+
+    $('case-root').innerHTML = `
+        <a href="#projects" class="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-ink transition-colors">
+            <i class="fa-solid fa-arrow-left text-xs rtl:-scale-x-100"></i>
+            <span>${esc(t['cs-back'])}</span>
+        </a>
+
+        <header class="mt-10 pb-10">
+            <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-accent-soft text-accent">${esc(t.case)}</span>
+            <h1 class="mt-4 text-3xl sm:text-5xl font-bold tracking-tight text-ink leading-tight">${esc(d.title)}</h1>
+            <p class="mt-4 text-base sm:text-lg text-muted leading-relaxed">${esc(d.subtitle || d.desc)}</p>
+            <dl class="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                ${meta.map(([k, v]) => `<div class="p-4 rounded-xl bg-soft border border-line"><dt class="text-xs text-muted">${esc(k)}</dt><dd class="mt-1 text-sm font-semibold text-ink">${v}</dd></div>`).join('')}
+            </dl>
+            ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(d.title)}" class="mt-8 w-full rounded-2xl border border-line">` : ''}
+        </header>
+
+        ${sections.map(([k, v]) => sec(k, v)).join('')}
+
+        ${hasSolution ? `
+        <section class="py-9 border-t border-line">
+            ${head('solution')}
+            ${!isEmpty(d.solution) ? `<div class="text-[15px] text-muted leading-loose space-y-4 mb-6">${renderBlock(d.solution)}</div>` : ''}
+            ${images ? `<div class="grid gap-6">${images}</div>` : ''}
+            ${p.protoLink ? `
+            <a href="${esc(p.protoLink)}" target="_blank" rel="noopener" class="mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
+                <i class="fa-brands fa-figma"></i><span>${esc(t['cs-proto'])}</span>
+            </a>` : ''}
+        </section>` : ''}
+
+        ${!isEmpty(d.takeaways) ? sec('takeaways', d.takeaways) : ''}
+
+        ${next && next.id !== p.id ? `
+        <a href="#/project/${esc(next.id)}" class="group mt-6 flex items-center justify-between gap-4 p-6 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+            <div>
+                <span class="text-xs text-slate-400">${esc(t['cs-next'])}</span>
+                <p class="mt-1 text-lg font-bold">${esc(next[lang].title)}</p>
+            </div>
+            <span class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-slate-900 transition-all">${arrow}</span>
+        </a>` : ''}
+    `;
+}
+
+// التنقل بين الصفحة الرئيسية ودراسات الحالة (يدعم زر الرجوع في المتصفح)
+function route() {
+    const m = location.hash.match(/^#\/project\/(.+)$/);
+    const project = m && PROJECTS.find(p => p.id === decodeURIComponent(m[1]));
+    if (project) {
+        renderCase(project.id);
+        $('home-view').classList.add('hidden');
+        $('case-study-view').classList.remove('hidden');
+        window.scrollTo({ top: 0 });
+    } else {
+        const wasCase = !$('case-study-view').classList.contains('hidden');
+        $('home-view').classList.remove('hidden');
+        $('case-study-view').classList.add('hidden');
+        const target = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+        if (target) target.scrollIntoView({ behavior: wasCase ? 'auto' : 'smooth' });
+        else if (wasCase) window.scrollTo({ top: 0 });
+    }
+}
+
+function renderAll() {
+    renderStatic();
+    renderProjects();
+    renderExperience();
+    renderAbout();
+    renderResume();
+}
+
+function toggleLanguage() {
+    lang = lang === 'ar' ? 'en' : 'ar';
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    renderAll();
+    const m = location.hash.match(/^#\/project\/(.+)$/);
+    if (m && PROJECTS.find(p => p.id === m[1])) renderCase(m[1]);
+}
+
+function showNotification(msg) {
+    const toast = $('toast');
+    $('toast-msg').textContent = msg;
+    toast.classList.remove('opacity-0');
+    setTimeout(() => toast.classList.add('opacity-0'), 3000);
+}
+
+window.addEventListener('hashchange', route);
+renderAll();
+route();
+</script>
 </body>
 </html>
