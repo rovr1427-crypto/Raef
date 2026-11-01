@@ -446,19 +446,22 @@ const ABOUT = {
 
 /* ───────────────────────── 5) الشهادات ─────────────────────────
    لإضافة شهادة: انسخ { ... } والصقها تحت آخر شهادة.
-   icon : graduation-cap (شهادة جامعية) ، award (شهادة) ، laptop-code (معسكر/دورة) ، certificate (شهادة احترافية)
+   logo : شعار الجهة (اختياري) — ارفع الصورة للريبو واكتب اسمها مثل "uqu-logo.png". إذا حطيته يطلع بدل الأيقونة
+   icon : أيقونة تطلع إذا ما فيه شعار: graduation-cap (شهادة جامعية) ، award (شهادة) ، laptop-code (معسكر/دورة) ، certificate (شهادة احترافية)
    link : رابط الشهادة (اختياري) — إذا حطيته يطلع زر "عرض الشهادة"
           ممكن يكون رابط Credly أو LinkedIn أو صورة/PDF مرفوعة للريبو مثل "cert-ux.pdf"
    تحت الشهادات يطلع زر تحميل السيرة الذاتية، ورابطه في SITE.resumeFile فوق.
 ─────────────────────────────────────────────────────────────── */
 const CERTIFICATES = [
     {
+        logo: "uqu-logo.png",      // ← شعار جامعة أم القرى
         icon: "graduation-cap",
         link: "",
         ar: { title: "بكالوريوس تفاعل الإنسان مع الحاسب", sub: "جامعة أم القرى • كلية الحاسبات • قسم هندسة البرمجيات", date: "متوقع 2028" },
         en: { title: "B.S. in Human-Computer Interaction", sub: "Umm Al-Qura University • College of Computing • Software Engineering Department", date: "Expected 2028" },
     },
     {
+        logo: "namakkin-logo.png", // ← شعار نمكّن
         icon: "laptop-code",
         link: "",
         ar: { title: "معسكر تجربة المستخدم", sub: "نمكّن", date: "2026" },
@@ -466,6 +469,7 @@ const CERTIFICATES = [
     },
     // مثال لشهادة جديدة — احذف // من بداية الأسطر وعدّلها:
     // {
+    //     logo: "",
     //     icon: "award",
     //     link: "https://...",
     //     ar: { title: "اسم الشهادة", sub: "الجهة المانحة", date: "2026" },
@@ -665,7 +669,11 @@ function renderCertificates() {
         const d = r[lang];
         return `
         <div class="flex gap-4 items-start p-5 rounded-2xl border border-line bg-white">
-            <span class="w-10 h-10 shrink-0 rounded-xl bg-soft border border-line flex items-center justify-center text-accent"><i class="fa-solid fa-${esc(r.icon || 'circle')} text-sm"></i></span>
+            <span class="w-14 h-14 shrink-0 rounded-xl bg-white border border-line flex items-center justify-center text-accent overflow-hidden">
+                ${r.logo
+                    ? `<img src="${esc(r.logo)}" alt="" class="w-full h-full object-contain p-1.5" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'fa-solid fa-${esc(r.icon || 'circle')} text-base'}))">`
+                    : `<i class="fa-solid fa-${esc(r.icon || 'circle')} text-base"></i>`}
+            </span>
             <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <h3 class="font-bold text-ink">${esc(d.title)}</h3>
