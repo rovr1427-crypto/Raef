@@ -169,16 +169,10 @@
                     <div id="cert-list" class="grid gap-3"></div>
 
                     <!-- زر تحميل السيرة الذاتية — الرابط يتحط في SITE.resumeFile -->
-                    <div class="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-slate-900 text-white">
-                        <div>
-                            <p class="font-bold text-lg" data-i18n="resume-title"></p>
-                            <p class="text-sm text-slate-400 mt-1" data-i18n="resume-sub"></p>
-                        </div>
-                        <a id="resume-download" href="#" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 text-sm font-semibold px-5 py-3 rounded-xl bg-white text-slate-900 hover:bg-slate-100 transition-colors shrink-0">
-                            <i class="fa-solid fa-download text-xs"></i>
-                            <span data-i18n="resume-download"></span>
-                        </a>
-                    </div>
+                    <a id="resume-download" href="#" target="_blank" rel="noopener" class="mt-6 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
+                        <i class="fa-solid fa-download text-xs"></i>
+                        <span data-i18n="resume-download"></span>
+                    </a>
                 </section>
             </div>
         </div>
@@ -498,7 +492,6 @@ const UI = {
         "cert-title": "الشهادات",
         "cert-view": "عرض الشهادة",
         "resume-title": "السيرة الذاتية",
-        "resume-sub": "كل خبراتي ومهاراتي في ملف واحد",
         "resume-download": "تحميل السيرة الذاتية",
         "resume-soon": "السيرة الذاتية بتكون متاحة قريباً",
         "footer-title": "خلنا نتواصل",
@@ -534,7 +527,6 @@ const UI = {
         "cert-title": "Certificates",
         "cert-view": "View certificate",
         "resume-title": "Resume",
-        "resume-sub": "All my experience and skills in one file",
         "resume-download": "Download resume",
         "resume-soon": "Resume will be available soon",
         "footer-title": "Let's connect",
