@@ -372,7 +372,7 @@ const PROJECTS = [
         id: "skyoffice",
         year: "2026",
         tags: ["Next.js", "TypeScript", "PostgreSQL", "Prisma"],
-        cover: "",
+        cover: "skyoffice-cover.webp",
         protoLink: "",
         liveLink: "",   // ← رابط الموقع المنشور (مثلاً رابط Vercel) — إذا حطيته يطلع زر "زيارة الموقع"
         images: [],
@@ -649,7 +649,7 @@ function renderProjects() {
         const d = p[lang];
         return `
         <a href="#/project/${esc(p.id)}" class="group block rounded-2xl border border-line bg-white hover:border-slate-300 hover:shadow-xl hover:shadow-slate-900/5 transition-all overflow-hidden">
-            ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(d.title)}" class="w-full aspect-[16/8] object-cover bg-soft">` : ''}
+            ${p.cover ? `<img src="${esc(p.cover)}" alt="${esc(d.title)}" class="w-full aspect-[16/10] object-cover bg-soft">` : ''}
             <div class="p-6 sm:p-7 flex gap-5">
                 <span class="section-num pt-1.5 hidden sm:block">${pad(i + 1)}</span>
                 <div class="flex-1 min-w-0">
