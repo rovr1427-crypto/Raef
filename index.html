@@ -267,7 +267,8 @@ const SITE = {
    year       السنة
    tags       الأدوات المستخدمة
    cover      صورة غلاف تطلع فوق دراسة الحالة (داخل المشروع) مثل "mystc-cover.webp"
-   imagesCols كم صورة في الصف في معرض الصور (1 أو 2 أو 4) — اختياري
+   imagesCols كم صورة في الصف في معرض الصور (1 أو 2 أو 3 أو 4) — اختياري
+              ولو تبي صورة وحدة تاخذ عرض الصف كامل أضف لها  wide: true
    protoLink  رابط البروتوتايب في فيجما (اختياري)
    liveLink   رابط الموقع المنشور (اختياري) — يطلع زر "زيارة الموقع"
    images     صور التصميم النهائي داخل دراسة الحالة. كل صورة:
@@ -343,39 +344,71 @@ const PROJECTS = [
     },
 
     {
-        id: "sports",
+        id: "dkka",
         year: "2026",
-        tags: ["Figma", "Flutter", "Dart"],
-        cover: "malaabik-cover.webp",
-        protoLink: "https://www.figma.com/design/xlEazLgPNCrhEiJ0fXhMEz/%D9%85%D9%84%D8%B9%D8%A8?node-id=0-1&t=zGUvxyFcG9EhlZ0F-1",
-        imagesCols: 4,
+        tags: ["Next.js", "TypeScript", "Firebase", "PWA"],
+        cover: "dkka-cover.webp",
+        protoLink: "",
+        liveLink: "",   // ← رابط موقع دكّه (مثلاً رابط Render) — إذا حطيته يطلع زر "زيارة الموقع"
+        imagesCols: 3,
         images: [
-            { src: "malaabik-list.webp",    ar: "الملاعب",       en: "Fields" },
-            { src: "malaabik-field.webp",   ar: "تفاصيل الملعب", en: "Field details" },
-            { src: "malaabik-booking.webp", ar: "تفاصيل الحجز",  en: "Booking details" },
-            { src: "malaabik-done.webp",    ar: "تأكيد الحجز",   en: "Booking confirmed" },
+            { src: "dkka-brand.webp",   wide: true, ar: "هوية دكّه: الشعار والألوان والخط", en: "DKKA identity: logo, colors and type" },
+            { src: "dkka-home.webp",    ar: "الرئيسية",  en: "Home" },
+            { src: "dkka-menu.webp",    ar: "المنيو",    en: "Menu" },
+            { src: "dkka-loyalty.webp", ar: "نقاطي",     en: "Loyalty" },
+            { src: "dkka-cashier.webp", wide: true, ar: "شاشة الكاشير: طلبات التطبيق مباشرة", en: "Cashier screen: live app orders" },
         ],
         ar: {
-            title: "ملعبك — تطبيق حجز الملاعب الرياضية",
-            desc: "تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.",
-            role: "",
-            overview: "منصة ذكية تربط بين أصحاب الملاعب الرياضية واللاعبين الراغبين في حجز الملاعب والمباريات بشكل سلس وموثوق.",
-            problem: "عملية الحجز التقليدية عبر الاتصال الهاتفي غير منظمة وتؤدي غالباً لتضارب المواعيد وفقدان الإيرادات.",
-            goal: "",
-            research: "تصميم واجهة مستخدم مبسطة تعتمد على تقويم تفاعلي واختيار سريع للمواقع الجغرافية والأوقات المتاحة.",
-            solution: "",
-            takeaways: "بناء هيكل برمجي نظيف وقابل للتوسع باستخدام إطار عمل Flutter مع دعم كامل للغة العربية والإنجليزية.",
+            title: "دكّه — نظام كافيه متكامل",
+            desc: "تطبيق للعميل، وشاشة للكاشير، ولوحة للمدير في موقع واحد يشتغل على الجوال والأيباد.",
+            role: "تصميم وتطوير",
+            overview: "دكّه نظام ويب لكافيه دكّه يجمع ثلاث واجهات في مكان واحد: العميل يطلب ويدفع ويجمع نقاط، والكاشير يستقبل الطلبات ويحضّرها، والمدير يتابع التقارير والمنيو والموظفين. كل شخص يدخل برقم جواله، والنظام يفتح له الواجهة حسب دوره.",
+            problem: [
+                "طوابير عند الكاشير وقت الذروة",
+                "نقاط الولاء ما كانت مربوطة بين الطلب من الفرع والطلب من الجوال",
+                "صعوبة متابعة طلبات السيارة والطاولات وقت التحضير",
+                "تحديث المنيو والأسعار يحتاج تدخل تقني",
+            ],
+            goal: [
+                "طلب ودفع من الجوال بخطوات قليلة، مع استلام من الكاونتر أو الطاولة أو السيارة",
+                "نقاط ولاء واحدة برقم الجوال، من التطبيق أو من الفرع",
+                "شاشة كاشير واضحة توضح حالة كل طلب (جديد ← قيد التحضير ← جاهز)",
+                "لوحة مدير يعدّل منها المنيو والصور والأسعار بنفسه",
+            ],
+            research: "",
+            solution: [
+                "تطبيق العميل: المنيو بالتصنيفات والخيارات (الحجم، الحليب، السكر)، السلة، الدفع بـ Apple Pay ومدى، تتبع الطلب، ونقاط الولاء",
+                "شاشة الكاشير: الطلبات تتحدث مباشرة مع تنبيه صوتي، ونقطة بيع تربط رقم الجوال وتستبدل المكافآت، وطباعة الفاتورة",
+                "لوحة المدير: التقارير، كل الطلبات بفلاتر والاسترجاع، إدارة المنيو والموظفين والكيترينق",
+                "هوية دكّه مطبّقة على كل الواجهات: ألوان العنابي والمرجاني، خط ثمانية، والنقشة",
+            ],
+            takeaways: "",
         },
         en: {
-            title: "Malaabik — Sports Field Booking App",
-            desc: "A mobile app built with Flutter to easily book and manage sports fields.",
-            role: "",
-            overview: "A smart platform connecting sports field owners with players who want to book fields and matches smoothly and reliably.",
-            problem: "Traditional booking over the phone is disorganized and often leads to double bookings and lost revenue.",
-            goal: "",
-            research: "A simplified interface built around an interactive calendar and quick selection of locations and available times.",
-            solution: "",
-            takeaways: "Building a clean, scalable codebase with Flutter, with full Arabic and English support.",
+            title: "DKKA — Complete Café System",
+            desc: "A customer app, a cashier screen and an admin dashboard in one site that works on phones and iPads.",
+            role: "Design & Development",
+            overview: "DKKA is a web system for DKKA Café that brings three interfaces together: customers order, pay and earn points; cashiers receive and prepare orders; managers track reports, the menu and staff. Everyone signs in with their phone number and gets the interface for their role.",
+            problem: [
+                "Queues at the cashier during peak hours",
+                "Loyalty points weren't shared between in-store and mobile orders",
+                "Hard to track car and table orders while preparing",
+                "Updating the menu and prices needed technical help",
+            ],
+            goal: [
+                "Order and pay from the phone in a few steps, with counter, table or car pickup",
+                "One loyalty balance tied to the phone number, in-app or in-store",
+                "A clear cashier screen showing each order's status (new → preparing → ready)",
+                "An admin dashboard where the owner edits the menu, photos and prices",
+            ],
+            research: "",
+            solution: [
+                "Customer app: categorized menu with options (size, milk, sugar), cart, Apple Pay and mada, order tracking and loyalty points",
+                "Cashier screen: live orders with sound alerts, a POS that links the phone number and redeems rewards, and receipt printing",
+                "Admin dashboard: reports, all orders with filters and refunds, menu, staff and catering management",
+                "The DKKA identity applied across every screen: maroon and coral colors, Thmanyah type and the pattern band",
+            ],
+            takeaways: "",
         },
     },
 
@@ -436,6 +469,43 @@ const PROJECTS = [
                 "Database-level protection against overlapping bookings, plus rate limiting and account lockout after failed logins",
             ],
             takeaways: "",
+        },
+    },
+
+    {
+        id: "sports",
+        year: "2026",
+        tags: ["Figma", "Flutter", "Dart"],
+        cover: "malaabik-cover.webp",
+        protoLink: "https://www.figma.com/design/xlEazLgPNCrhEiJ0fXhMEz/%D9%85%D9%84%D8%B9%D8%A8?node-id=0-1&t=zGUvxyFcG9EhlZ0F-1",
+        imagesCols: 4,
+        images: [
+            { src: "malaabik-list.webp",    ar: "الملاعب",       en: "Fields" },
+            { src: "malaabik-field.webp",   ar: "تفاصيل الملعب", en: "Field details" },
+            { src: "malaabik-booking.webp", ar: "تفاصيل الحجز",  en: "Booking details" },
+            { src: "malaabik-done.webp",    ar: "تأكيد الحجز",   en: "Booking confirmed" },
+        ],
+        ar: {
+            title: "ملعبك — تطبيق حجز الملاعب الرياضية",
+            desc: "تطبيق للهواتف الذكية مطور بـ Flutter لحجز وإدارة الملاعب الرياضية بكل سهولة.",
+            role: "",
+            overview: "منصة ذكية تربط بين أصحاب الملاعب الرياضية واللاعبين الراغبين في حجز الملاعب والمباريات بشكل سلس وموثوق.",
+            problem: "عملية الحجز التقليدية عبر الاتصال الهاتفي غير منظمة وتؤدي غالباً لتضارب المواعيد وفقدان الإيرادات.",
+            goal: "",
+            research: "تصميم واجهة مستخدم مبسطة تعتمد على تقويم تفاعلي واختيار سريع للمواقع الجغرافية والأوقات المتاحة.",
+            solution: "",
+            takeaways: "بناء هيكل برمجي نظيف وقابل للتوسع باستخدام إطار عمل Flutter مع دعم كامل للغة العربية والإنجليزية.",
+        },
+        en: {
+            title: "Malaabik — Sports Field Booking App",
+            desc: "A mobile app built with Flutter to easily book and manage sports fields.",
+            role: "",
+            overview: "A smart platform connecting sports field owners with players who want to book fields and matches smoothly and reliably.",
+            problem: "Traditional booking over the phone is disorganized and often leads to double bookings and lost revenue.",
+            goal: "",
+            research: "A simplified interface built around an interactive calendar and quick selection of locations and available times.",
+            solution: "",
+            takeaways: "Building a clean, scalable codebase with Flutter, with full Arabic and English support.",
         },
     },
 ];
@@ -743,7 +813,8 @@ function renderCase(id) {
     const images = (p.images || []).map(im => {
         const src = typeof im === 'string' ? im : im.src;
         const cap = typeof im === 'string' ? '' : (im[lang] || '');
-        return `<figure class="space-y-2">
+        const wide = typeof im === 'object' && im.wide;
+        return `<figure class="space-y-2${wide ? ' col-span-full' : ''}">
             <img src="${esc(src)}" alt="${esc(cap || d.title)}" loading="lazy" class="w-full rounded-2xl border border-line bg-soft">
             ${cap ? `<figcaption class="text-xs text-muted text-center">${esc(cap)}</figcaption>` : ''}
         </figure>`;
@@ -777,7 +848,7 @@ function renderCase(id) {
         <section class="py-9 border-t border-line">
             ${head('solution')}
             ${!isEmpty(d.solution) ? `<div class="text-[15px] text-muted leading-loose space-y-4 mb-6">${renderBlock(d.solution)}</div>` : ''}
-            ${images ? `<div class="grid gap-6 ${p.imagesCols >= 4 ? 'grid-cols-2 sm:grid-cols-4' : p.imagesCols >= 2 ? 'grid-cols-2' : ''}">${images}</div>` : ''}
+            ${images ? `<div class="grid gap-6 ${p.imagesCols >= 4 ? 'grid-cols-2 sm:grid-cols-4' : p.imagesCols === 3 ? 'grid-cols-3' : p.imagesCols >= 2 ? 'grid-cols-2' : ''}">${images}</div>` : ''}
             ${p.protoLink || p.liveLink ? `<div class="mt-6 flex flex-wrap gap-3">` : ''}
             ${p.protoLink ? `
             <a href="${esc(p.protoLink)}" target="_blank" rel="noopener" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-accent hover:bg-blue-700 text-white text-sm font-medium transition-all shadow-sm">
